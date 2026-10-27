@@ -1,0 +1,9 @@
+id,code,name,cost_center,created_at,updated_at
+1,ENG,Software Engineering,CC-1010,2026-01-15T09:00:00,2026-01-15T09:00:00
+2,PROD,Product Management,CC-1020,2026-01-15T09:00:00,2026-01-15T09:00:00
+3,DATA,Data & Artificial Intelligence,CC-1030,2026-01-15T09:00:00,2026-01-15T09:00:00
+4,DES,Design & UX,CC-1040,2026-01-15T09:00:00,2026-01-15T09:00:00
+5,SEC,Information Security,CC-1050,2026-01-15T09:00:00,2026-01-15T09:00:00
+6,OPS,Cloud & Infrastructure Operations,CC-1060,2026-01-15T09:00:00,2026-01-15T09:00:00
+7,QA,Quality Assurance & Test Engineering,CC-1070,2026-01-15T09:00:00,2026-01-15T09:00:00
+8,CORP,Corporate & People Operations,CC-1080,2026-01-15T09:00:00,2026-01-15T09:00:00

@@ -1,0 +1,10 @@
+[
+  {
+    "attempt_id":"APP-REQ-2026-000001-CAND-000001-DUP-01",
+    "candidate_id":"CAND-000001",
+    "requisition_id":"REQ-2026-000001",
+    "status":"BLOCKED_DUPLICATE",
+    "attempted_at":"2026-01-30T09:00:00",
+    "reason":"Blocked by unique constraint: Candidate already applied to this requisition"
+  }
+]

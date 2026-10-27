@@ -1,0 +1,72 @@
+{
+  "status": "VERIFIED_REPRODUCIBLE",
+  "seed": 20261022,
+  "scale": "starter",
+  "runs_compared": 2,
+  "record_counts": {
+    "run_1": {
+      "requisitions": 10,
+      "candidates": 100,
+      "applications": 150,
+      "interviews": 30,
+      "offers": 10,
+      "anomalies": 5
+    },
+    "run_2": {
+      "requisitions": 10,
+      "candidates": 100,
+      "applications": 150,
+      "interviews": 30,
+      "offers": 10,
+      "anomalies": 5
+    },
+    "matched": true
+  },
+  "file_checksums": {
+    "run_1": {
+      "departments": "2794714f5c777d7f81d459f58095c19d2bd0181ed26c7d4174cf6f88fc3c1bbf",
+      "skills": "d0701fd9a82ac0139dcbcad82d3a39547432280969370a3a394747c46038ea6d",
+      "interviewers": "5877e7949044643885739ef26386709be63c4b8035015a90f6b85c52d532dce7",
+      "job_requisitions": "23c518b06a6700491523445ae7902564510cd02d3fb0d3bf9fbc4c6ab35bae9b",
+      "requisition_required_skills": "18c4dade6be374be420fb502978a8e31e59cf3d048cc2792c0c09814360a77e3",
+      "screening_rules": "aa245f4d480c809579f852a594476b7dc9f246fda0e2b88723e726b74267fc86",
+      "candidates": "6191cfc6df08bd239fe4ce8f164372c895eada9c8804280c307bbf839617ea88",
+      "candidate_skills": "c4107e2e1df62e89120a6bd045f4b4c7de08c532952746d8a03f2ed538f9f59d",
+      "resume_artifacts": "338c8d47d8bb598732dcb40d032c387050102ab7311445f0bf2f4bb11a76a89a",
+      "applications": "09616af46edb2f8bb90114f6e067df0090d16bfd00a0e417e8cbd43361e64ad8",
+      "duplicate_application_attempts": "7c08363b72f6757ee722576c4c99ca5fe0c6e7e9b7967bf28212b7f44ade7a9d",
+      "candidate_screening_results": "c65cbf4107e9f71828c3a291e232017ac94169ceeaab8f48ac59f0ff1ceb3cb2",
+      "interviews": "3da89b9f4129c5f2730f40cdc6b5f00a05f595283e9179cc678e53b6a5815727",
+      "interviewer_assignments": "ba7e6bcb852c0f16154258b16b901405943d1a8d673891df9ab017df01ef6b7a",
+      "feedback": "0c2a7062a08a835ed84d92a0df589df2e88e974dbda32e54d4374d0a7b2ff52b",
+      "offers": "3a16258d51cbe3eae6d064ffec86dfb5c827a7dd05340100f6493f56b6fa48cc",
+      "offer_approvals": "cbd99a9826b76891b706ff4806b95e1868ecade381e4f0adb183b91bd67ea2b3"
+    },
+    "run_2": {
+      "departments": "2794714f5c777d7f81d459f58095c19d2bd0181ed26c7d4174cf6f88fc3c1bbf",
+      "skills": "d0701fd9a82ac0139dcbcad82d3a39547432280969370a3a394747c46038ea6d",
+      "interviewers": "5877e7949044643885739ef26386709be63c4b8035015a90f6b85c52d532dce7",
+      "job_requisitions": "23c518b06a6700491523445ae7902564510cd02d3fb0d3bf9fbc4c6ab35bae9b",
+      "requisition_required_skills": "18c4dade6be374be420fb502978a8e31e59cf3d048cc2792c0c09814360a77e3",
+      "screening_rules": "aa245f4d480c809579f852a594476b7dc9f246fda0e2b88723e726b74267fc86",
+      "candidates": "6191cfc6df08bd239fe4ce8f164372c895eada9c8804280c307bbf839617ea88",
+      "candidate_skills": "c4107e2e1df62e89120a6bd045f4b4c7de08c532952746d8a03f2ed538f9f59d",
+      "resume_artifacts": "338c8d47d8bb598732dcb40d032c387050102ab7311445f0bf2f4bb11a76a89a",
+      "applications": "09616af46edb2f8bb90114f6e067df0090d16bfd00a0e417e8cbd43361e64ad8",
+      "duplicate_application_attempts": "7c08363b72f6757ee722576c4c99ca5fe0c6e7e9b7967bf28212b7f44ade7a9d",
+      "candidate_screening_results": "c65cbf4107e9f71828c3a291e232017ac94169ceeaab8f48ac59f0ff1ceb3cb2",
+      "interviews": "3da89b9f4129c5f2730f40cdc6b5f00a05f595283e9179cc678e53b6a5815727",
+      "interviewer_assignments": "ba7e6bcb852c0f16154258b16b901405943d1a8d673891df9ab017df01ef6b7a",
+      "feedback": "0c2a7062a08a835ed84d92a0df589df2e88e974dbda32e54d4374d0a7b2ff52b",
+      "offers": "3a16258d51cbe3eae6d064ffec86dfb5c827a7dd05340100f6493f56b6fa48cc",
+      "offer_approvals": "cbd99a9826b76891b706ff4806b95e1868ecade381e4f0adb183b91bd67ea2b3"
+    },
+    "all_files_matched": true
+  },
+  "validation_comparison": {
+    "run_1_passed": 13,
+    "run_2_passed": 13,
+    "matched": true
+  },
+  "conclusion": "Two independent executions with identical seed yielded bitwise-identical exports and identical database states."
+}

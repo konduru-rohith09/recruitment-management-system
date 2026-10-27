@@ -1,0 +1,57 @@
+[
+  {
+    "issue_id": "ANOM-2026-000001",
+    "issue_type": "INTERVIEWER_UNAVAILABLE",
+    "affected_entity_type": "INTERVIEW",
+    "affected_record_id": "INT-2026-999001",
+    "expected_decision": "BLOCK_ASSIGNMENT_OR_RESCHEDULE",
+    "severity": "HIGH",
+    "detection_result": "DETECTED_IN_AUDIT",
+    "explanation": "Interview INT-2026-999001 assigned to inactive interviewer EMP-000015.",
+    "recommended_action": "Reassign to an active interviewer."
+  },
+  {
+    "issue_id": "ANOM-2026-000002",
+    "issue_type": "DUPLICATE_APPLICATION",
+    "affected_entity_type": "APPLICATION",
+    "affected_record_id": "APP-REQ-2026-000001-CAND-000001-DUP-01",
+    "expected_decision": "REJECT_OR_FLAG_DUPLICATE_ATTEMPT",
+    "severity": "MEDIUM",
+    "detection_result": "BLOCKED_BY_VALIDATION",
+    "explanation": "Duplicate application attempt APP-REQ-2026-000001-CAND-000001-DUP-01 by candidate CAND-000001 for REQ-2026-000001 blocked and recorded in staging.",
+    "recommended_action": "Consolidate duplicate records and preserve staging attempt logs."
+  },
+  {
+    "issue_id": "ANOM-2026-000003",
+    "issue_type": "MISSING_FEEDBACK",
+    "affected_entity_type": "APPLICATION",
+    "affected_record_id": "APP-REQ-2026-000010-CAND-000049",
+    "expected_decision": "BLOCK_ADVANCEMENT_UNTIL_FEEDBACK_SUBMITTED",
+    "severity": "HIGH",
+    "detection_result": "DETECTED_IN_AUDIT",
+    "explanation": "Application APP-REQ-2026-000010-CAND-000049 advanced without scorecard from EMP-000001.",
+    "recommended_action": "Collect missing scorecard or revert stage."
+  },
+  {
+    "issue_id": "ANOM-2026-000004",
+    "issue_type": "SALARY_OUTSIDE_BAND",
+    "affected_entity_type": "OFFER",
+    "affected_record_id": "OFF-2026-999001",
+    "expected_decision": "BLOCK_OFFER_OR_REQUIRE_EXECUTIVE_APPROVAL",
+    "severity": "HIGH",
+    "detection_result": "DETECTED_IN_AUDIT",
+    "explanation": "Offer OFF-2026-999001 salary ($185,000.00) exceeds req limit ($140,000.00) without exception approval.",
+    "recommended_action": "Obtain executive approval or reduce offer salary."
+  },
+  {
+    "issue_id": "ANOM-2026-000005",
+    "issue_type": "CLOSED_ROLE_ACTIVE_APPLICATIONS",
+    "affected_entity_type": "APPLICATION",
+    "affected_record_id": "APP-REQ-2026-000006-CAND-000006",
+    "expected_decision": "DISPOSITION_APPLICATIONS_BEFORE_CLOSING_REQUISITION",
+    "severity": "MEDIUM",
+    "detection_result": "DETECTED_IN_AUDIT",
+    "explanation": "Application APP-REQ-2026-000006-CAND-000006 active under closed requisition REQ-2026-000006.",
+    "recommended_action": "Disposition active candidates before finalizing role closure."
+  }
+]

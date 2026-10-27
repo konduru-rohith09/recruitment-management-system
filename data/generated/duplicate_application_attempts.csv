@@ -1,0 +1,2 @@
+attempt_id,candidate_id,requisition_id,status,attempted_at,reason
+APP-REQ-2026-000001-CAND-000001-DUP-01,CAND-000001,REQ-2026-000001,BLOCKED_DUPLICATE,2026-01-30T09:00:00,Blocked by unique constraint: Candidate already applied to this requisition

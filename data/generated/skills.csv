@@ -1,0 +1,31 @@
+skill_id,name,category,created_at
+6,AWS,Cloud,2026-01-15T09:00:00
+29,Agile Scrum,Management,2026-01-15T09:00:00
+18,CI/CD,DevOps,2026-01-15T09:00:00
+30,Data Warehousing,Data,2026-01-15T09:00:00
+4,Docker,Cloud,2026-01-15T09:00:00
+3,FastAPI,Backend,2026-01-15T09:00:00
+24,Git,Tools,2026-01-15T09:00:00
+27,Go,Backend,2026-01-15T09:00:00
+22,GraphQL,API,2026-01-15T09:00:00
+28,Java,Backend,2026-01-15T09:00:00
+25,Kafka,Messaging,2026-01-15T09:00:00
+5,Kubernetes,Cloud,2026-01-15T09:00:00
+26,Linux,OS,2026-01-15T09:00:00
+15,Machine Learning,Data,2026-01-15T09:00:00
+21,Microservices,Architecture,2026-01-15T09:00:00
+8,MySQL,Database,2026-01-15T09:00:00
+11,Next.js,Frontend,2026-01-15T09:00:00
+14,NumPy,Data,2026-01-15T09:00:00
+13,Pandas,Data,2026-01-15T09:00:00
+7,PostgreSQL,Database,2026-01-15T09:00:00
+16,PyTest,Testing,2026-01-15T09:00:00
+1,Python,Backend,2026-01-15T09:00:00
+23,REST API,API,2026-01-15T09:00:00
+9,React,Frontend,2026-01-15T09:00:00
+20,Redis,Database,2026-01-15T09:00:00
+2,SQL,Database,2026-01-15T09:00:00
+17,Selenium,Testing,2026-01-15T09:00:00
+12,System Design,Architecture,2026-01-15T09:00:00
+19,Terraform,DevOps,2026-01-15T09:00:00
+10,TypeScript,Frontend,2026-01-15T09:00:00

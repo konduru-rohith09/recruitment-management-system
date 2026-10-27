@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-10-26T16:26:05.010233",
+  "total_checks": 13,
+  "passed_checks": 13,
+  "failed_checks": 0,
+  "warnings": 0,
+  "checks": [
+    {
+      "check_name": "PK_UNIQUENESS_REQUISITIONS",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Requisitions count: 100, Distinct PKs: 100"
+    },
+    {
+      "check_name": "PK_UNIQUENESS_CANDIDATES",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Candidates count: 2000, Distinct PKs: 2000"
+    },
+    {
+      "check_name": "PK_UNIQUENESS_APPLICATIONS",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Applications count: 3000, Distinct PKs: 3000"
+    },
+    {
+      "check_name": "PK_UNIQUENESS_INTERVIEWS",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Interviews count: 602, Distinct PKs: 602"
+    },
+    {
+      "check_name": "PK_UNIQUENESS_OFFERS",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Offers count: 151, Distinct PKs: 151"
+    },
+    {
+      "check_name": "FK_INTEGRITY_APP_REQUISITION",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Orphaned application-to-requisition references: 0"
+    },
+    {
+      "check_name": "FK_INTEGRITY_APP_CANDIDATE",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Orphaned application-to-candidate references: 0"
+    },
+    {
+      "check_name": "FK_INTEGRITY_INTERVIEW_APP",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Orphaned interview-to-application references: 0"
+    },
+    {
+      "check_name": "FK_INTEGRITY_OFFER_APP",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Orphaned offer-to-application references: 0"
+    },
+    {
+      "check_name": "DATE_ORDER_INTERVIEW_TIMES",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Interviews with end <= start: 0"
+    },
+    {
+      "check_name": "DATE_ORDER_REQUISITION_DATES",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Requisitions with closed_at < opened_at: 0"
+    },
+    {
+      "check_name": "SALARY_BAND_ORDERING",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Requisitions with min_salary > max_salary: 0"
+    },
+    {
+      "check_name": "DERIVED_SCREENING_SCORES",
+      "status": "PASSED",
+      "severity": "ERROR",
+      "details": "Screening results with arithmetic deviation: 0"
+    }
+  ],
+  "anomaly_detection_results": {
+    "total_detected": 179,
+    "by_type": {
+      "INTERVIEWER_UNAVAILABLE": 119,
+      "DUPLICATE_APPLICATION": 1,
+      "MISSING_FEEDBACK": 1,
+      "SALARY_OUTSIDE_BAND": 1,
+      "CLOSED_ROLE_ACTIVE_APPLICATIONS": 57
+    },
+    "by_severity": {
+      "HIGH": 23,
+      "CRITICAL": 98,
+      "MEDIUM": 58
+    }
+  }
+}
