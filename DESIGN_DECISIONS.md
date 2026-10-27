@@ -1,254 +1,212 @@
-<<<<<<< HEAD
 # Design Decisions
 
 ## Recruitment Management System
 
-This document records the reasoning behind the system's architecture and implementation. It is intended to help reviewers understand not only what the project does, but why particular choices were made.
+This document explains the architecture, implementation choices, trade-offs, and limitations of the Recruitment Management System. It also records the evidence used to evaluate these choices.
 
-> **Accuracy note:** This draft is based on the repository structure and deployment details currently known. Confirm each statement against the code before submission. Remove any design choice that is not implemented, and add alternatives or trade-offs that reflect the decisions you actually made.
+## 1. Project Goal
 
-## 1. Architecture at a glance
+The Recruitment Management System organizes recruitment activities, including candidate screening, interview scheduling, recruitment workflow tracking, offer handling, validation, audit functionality, and related reporting.
+
+The goal is to keep recruitment responsibilities organized, make the system easier to maintain, and provide a foundation for testing and reviewing recruitment workflows.
+
+## 2. Architecture
 
 The repository separates the application into several areas:
 
-- `frontend/` — React/Vite frontend.
-- `api/` — API-facing code.
-- `src/` — core recruitment modules, including screening, scheduling, workflow, offers, audit, validation, and supporting code where present.
-- `schemas/` — schema definitions where used.
-- `migrations/` — database migration scripts.
+- `src/` — core models and recruitment business logic, including screening, scheduling, workflow, offers, validation, and audit functionality.
+- `api/` — backend API functionality.
+- `app/` — application functionality, where present in the implementation.
+- `frontend/` — React and Vite frontend.
 - `tests/` — automated tests.
-- `data/` and `reports/` — project data and report artifacts where applicable.
+- `schemas/` — schema definitions, where used.
+- `migrations/` — database migration scripts.
+- `data/` and `reports/` — project data and report-related resources, where applicable.
 
-The backend is deployed on Render, and the frontend is deployed on Vercel. The health endpoint has returned `HTTP 200 OK` with a response indicating that the service is up and the database is healthy during a recorded check.
+FastAPI provides the backend API, while the frontend is deployed separately.
 
-## 2. Decision: separate business responsibilities into modules
+**Why this structure:** Separating business logic, API functionality, frontend code, and tests makes responsibilities easier to locate and maintain.
+
+**Trade-off:** A modular structure introduces additional files and interfaces that developers must understand and maintain.
+
+## 3. Decision: Separate Business Responsibilities
 
 **Decision:** Keep recruitment responsibilities such as screening, scheduling, workflow transitions, offer handling, audit behavior, and validation in separate modules where supported by the implementation.
 
-**Why:** Each responsibility can be understood, tested, and changed with less risk of affecting unrelated logic.
+**Reasoning:** Each responsibility can be reviewed, tested, and modified with less risk of unintentionally affecting unrelated functionality.
 
-**Alternative considered:** Put all business rules in one large application module.
+**Alternative considered:** Place all recruitment business rules in one large application module.
 
-**Trade-off:** A modular design introduces more files and interfaces to maintain, but improves readability and allows focused tests.
+**Trade-off:** Separate modules improve organization and testability but require clear interfaces between components.
 
-**Evidence to verify:** Review the actual module files and the corresponding tests in `tests/`.
+**Evidence:** The repository contains corresponding recruitment modules and automated test files. The implementation and tests should be reviewed together to confirm the exact behavior of each module.
 
-## 3. Decision: keep automated tests alongside the implementation
+## 4. Decision: Use FastAPI for the Backend
 
-**Decision:** Maintain a dedicated `tests/` directory for automated checks.
+**Decision:** Use FastAPI to expose backend functionality through HTTP endpoints.
 
-**Why:** Reviewers can inspect expected behavior independently of the UI and repeat checks after code changes.
-
-**Alternative considered:** Rely entirely on manual testing.
-
-**Trade-off:** Automated tests take time to write and maintain, and passing tests do not prove every possible behavior. Manual checks are still needed for deployment and browser integration.
-
-**Evidence to verify:** Run the test suite and record the exact command, result summary, and any failures or skips in `TESTING.md`.
-
-## 4. Decision: use environment-based frontend API configuration
-
-**Decision:** The frontend reads `VITE_API_URL` and has a fallback in `frontend/src/App.jsx`.
-
-**Why:** The frontend can target a deployed API rather than assuming the API is running on the developer's local machine.
-
-**Alternative considered:** Hard-code a localhost URL into production frontend code.
-
-**Trade-off:** Vite environment variables are embedded during the build, so a changed production value requires a new frontend build/deployment. Any variable prefixed with `VITE_` is exposed to browser-side code and must not contain secrets.
-
-**Evidence observed:** The deployed frontend made requests to `https://recruitment-management-system-api.onrender.com/health`. The repository history includes commit `936757e` for environment-based API configuration and commit `43c73bd` for the deployed backend URL fallback.
-
-## 5. Decision: validate deployment problems with evidence
-
-**Decision:** Diagnose frontend/backend connectivity using the browser Console, Network panel, health endpoint, and HTTP response headers before repeatedly changing hosting configuration.
-
-**Why:** A browser fetch failure can be caused by several layers, including an incorrect URL, CORS, a browser extension, or a server failure. These causes require different fixes.
-
-**Alternative considered:** Repeatedly redeploying or changing CORS configuration without isolating the cause.
-
-**Trade-off:** Evidence gathering takes a few extra steps, but reduces unnecessary configuration changes and makes the final explanation more defensible.
-
-**Evidence observed:** A `curl.exe` request to the deployed health endpoint returned `HTTP 200 OK`, `status: UP`, and `database: HEALTHY`. A request carrying the Vercel origin returned an `access-control-allow-origin` header matching that origin. Chrome also showed `net::ERR_BLOCKED_BY_CLIENT`, and the site reportedly connected in Incognito. This supports investigating browser-side blocking, but does not identify a particular extension unless it was isolated experimentally.
-
-## 6. Decision: use a relational database and migrations
-
-**Decision:** The repository includes database configuration and migration artifacts, including `alembic.ini`, `migrations/`, and a migration utility for SQLite-to-MySQL conversion. The deployed health response reported the database as healthy at the time of the check.
-
-**Why:** Persistent recruitment records need a defined schema and a controlled way to evolve it.
-
-**Alternative considered:** Store all operational data only in transient in-memory structures or manually modify the schema without migration scripts.
-
-**Trade-off:** Relational persistence and migrations add configuration and operational work, but support durable data and traceable schema changes.
-
-**Evidence to verify:** Confirm the actual database engine and ORM configuration in code, inspect the migration scripts, and document migration testing and rollback limitations. Do not run destructive migrations against production without a recovery plan.
-
-## 7. Decision: document AI use and human review separately
-
-**Decision:** Maintain a prompt history that distinguishes the prompt, AI contribution, human review, and validation evidence.
-
-**Why:** The assessment explicitly asks for transparent LLM use and visible reasoning. A useful record should show how the developer evaluated suggestions rather than treating generated output as automatically correct.
-
-**Alternative considered:** Include only a generic statement such as “AI was used.”
-
-**Trade-off:** A detailed log takes time to maintain and must not be presented as a verbatim transcript if prompts were reconstructed. Accuracy is more important than making the log appear perfect.
-
-**Evidence to verify:** Compare entries with available conversation history, actual code changes, Git diffs, and test output. Label reconstructed entries honestly.
-
-## 8. Trade-offs and limitations to discuss
-
-Confirm which of these apply before submission:
-
-- Automated tests cover only the cases represented in the test suite; passing tests do not guarantee absence of defects.
-- A health endpoint confirms the specific checks it performs, not every API route or frontend interaction.
-- A successful CORS header check for one origin and route does not prove all requests and preflight cases work.
-- Deployment behavior can differ from local behavior because of environment variables, hosting configuration, and browser restrictions.
-- Any feature not demonstrated by source code or repeatable evidence should be described as unverified, incomplete, or out of scope.
-
-## 9. Questions I should be ready to answer
-
-1. Why were screening, scheduling, workflow, and offer handling separated?
-2. Which workflow transition is allowed or rejected, and where is that rule implemented?
-3. How do the tests verify invalid inputs and edge cases?
-4. How does the frontend select the deployed API URL?
-5. What does the health endpoint prove, and what does it not prove?
-6. How did I distinguish a CORS issue from a browser-side request block?
-7. Which AI suggestions did I accept, modify, or reject, and how did I validate the result?
-8. What are the current limitations and the next improvement I would make?
-
-## 10. Evidence references
-
-Fill in these references after checking the repository and running the relevant commands:
-
-- **Source files:** [Add exact file paths for the decisions above.]
-- **Tests:** [Add exact test names and real results.]
-- **Git history:** `7b66eac`, `936757e`, `43c73bd` (confirm with `git log --oneline`).
-- **Deployment check:** [Add date/time, endpoint, HTTP status, and sanitized output.]
-- **Outstanding issues:** [List real failures, gaps, or unverified behavior.]
-=======
-\# Design Decisions
-
-
-
-\## 1. Project Goal
-
-
-
-The Recruitment Management System organizes recruitment activities, including requisitions, candidate screening, interview scheduling, workflow tracking, offers, audit checks, and reporting.
-
-
-
-\## 2. Architecture
-
-
-
-The project separates application responsibilities into several areas:
-
-
-
-\- `src/`: core models, business logic, workflow, scheduling, screening, offers, validation, and audit functionality.
-
-\- `api/`: backend API functionality.
-
-\- `app/`: user-facing application functionality.
-
-\- `frontend/`: frontend application.
-
-\- `tests/`: automated tests.
-
-\- `schemas/`: data schemas.
-
-\- `migrations/`: database migration files.
-
-\- `data/` and `reports/`: data and report-related project resources.
-
-
-
-This separation helps keep core business logic distinct from the interface and API.
-
-
-
-\## 3. Backend and API
-
-
-
-FastAPI provides the HTTP API and interactive API documentation. The health endpoint provides a basic way to check application and database availability.
-
-
+**Reasoning:** An API separates backend operations from the user interface and provides an interface that can be inspected through interactive API documentation.
 
 The deployed API documentation is available at:
 
-
-
 https://recruitment-management-system-api.onrender.com/docs
 
+The health endpoint is available at:
 
+https://recruitment-management-system-api.onrender.com/health
 
-\## 4. Frontend and Deployment
+**Trade-off:** An API-based architecture requires correct configuration of routes, request and response formats, error handling, and cross-origin access.
 
+The health endpoint provides evidence only for the checks implemented by that endpoint. It does not establish that every API route works correctly.
 
+## 5. Decision: Deploy the Frontend and Backend Separately
 
-The frontend is built using Vite and is deployed separately from the backend.
+**Decision:** Deploy the frontend on Vercel and the backend on Render.
 
+- Frontend: https://recruitment-management-system-three.vercel.app/
+- Backend: https://recruitment-management-system-api.onrender.com
 
+**Reasoning:** Separate deployments allow the frontend and backend to be built and deployed independently.
 
-\- Frontend: https://recruitment-management-system-three.vercel.app/
+**Alternative considered:** Serve the frontend and backend from a single deployment.
 
-\- Backend: https://recruitment-management-system-api.onrender.com
+**Trade-off:** Separate hosting makes independent deployment possible but requires correct API URL configuration, CORS settings, and environment variables.
 
+## 6. Decision: Use Environment-Based API Configuration
 
+**Decision:** The frontend reads `VITE_API_URL` and includes a fallback in `frontend/src/App.jsx`, according to the recorded implementation details.
 
-Separating frontend and backend deployment allows each component to be built and deployed independently. It also requires correct API URL configuration and cross-origin request settings.
+**Reasoning:** This allows the frontend to target the deployed backend instead of depending on a local API URL.
 
+**Alternative considered:** Hard-code a localhost URL into the production frontend.
 
+**Trade-off:** Vite environment variables are embedded during the frontend build. Changing the production value generally requires rebuilding and redeploying the frontend.
 
-\## 5. Configuration and Secrets
+Variables prefixed with `VITE_` are exposed to browser-side code. They must never contain passwords, API keys, or other secrets.
 
+**Evidence recorded:** The deployed frontend was observed making requests to the Render health endpoint. The repository history previously identified commits `936757e` for environment-based API configuration and `43c73bd` for the deployed backend URL fallback. Verify these commit references against the current Git history before submission.
 
+## 7. Decision: Use Database Configuration and Migrations
 
-Environment-specific configuration is supplied through environment variables. `.env.example` provides a template for local setup, while the actual `.env` file is excluded from Git.
+**Decision:** The repository includes database configuration and migration-related artifacts, including `alembic.ini`, a `migrations/` directory, and a utility for SQLite-to-MySQL conversion.
 
+**Reasoning:** Recruitment records require persistent storage, a defined schema, and a controlled approach to schema changes.
 
+**Alternative considered:** Keep all operational data in temporary in-memory structures or change database schemas manually without migration scripts.
 
-Never commit real database passwords, API keys, access tokens, or production credentials.
+**Trade-off:** Database configuration and migrations add setup and operational complexity but provide a more structured way to manage persistent data and schema changes.
 
+The deployed health endpoint previously reported the database as `HEALTHY`. This confirms only the state reported by that endpoint at the time checked.
 
+Before making database changes, verify the actual database configuration, inspect the migration scripts, and understand the recovery process. Do not run destructive migrations against production without a recovery plan.
 
-\## 6. Testing Strategy
+## 8. Decision: Maintain Automated Tests
 
+**Decision:** Keep automated tests in the dedicated `tests/` directory.
 
+**Reasoning:** Automated tests help check expected behavior, detect regressions, and provide repeatable evidence that selected functionality works.
 
-Automated Python tests validate selected application behavior. The recorded test run completed with 19 passing tests and no failures.
+**Alternative considered:** Rely entirely on manual testing.
 
+**Trade-off:** Tests require time to create and maintain, and passing tests do not prove the absence of defects. Manual verification is still necessary for browser behavior, deployment, and complete user workflows.
 
+**Recorded evidence:** The documented Python test run completed with 19 tests passed and 0 failed in 11.38 seconds.
 
-The frontend is checked through a clean npm installation and a production build. These checks verify installation and compilation, but do not by themselves prove that every browser workflow works correctly.
+The frontend dependency installation and production build were also reported as successful in the testing documentation.
 
+These results apply to the recorded runs and should not be treated as proof that every feature works in production.
 
+See `TESTING.md` for the commands, recorded results, and outstanding verification gaps.
 
-\## 7. Screening and Responsible Use
+## 9. Decision: Diagnose Deployment Problems Using Evidence
 
+**Decision:** Investigate frontend/backend connectivity using browser Console output, the Network panel, the health endpoint, and HTTP response headers before changing hosting configuration.
 
+**Reasoning:** A failed browser request can originate from an incorrect API URL, CORS configuration, browser-side blocking, or a server-side failure. Each cause requires a different response.
 
-Screening outputs should support human review rather than act as the sole basis for hiring decisions. Recruitment decisions can affect applicants significantly, so the system should be reviewed for incorrect results, inconsistent treatment, and inappropriate use of candidate data.
+**Alternative considered:** Repeatedly redeploy the backend or modify CORS configuration without first identifying the failing request.
 
+**Trade-off:** Evidence gathering takes additional time but helps avoid unnecessary configuration changes.
 
+**Evidence recorded:**
 
-\## 8. Limitations
+- A request to the deployed health endpoint returned HTTP 200.
+- The response reported the application status as `UP` and database status as `HEALTHY`.
+- A request carrying the Vercel frontend origin returned a matching `access-control-allow-origin` header.
+- The browser Console showed `net::ERR_BLOCKED_BY_CLIENT`.
+- The site was subsequently reported to connect in Incognito mode.
 
+The browser error makes client-side blocking a possible explanation, but the exact cause was not conclusively established. A successful health request also does not prove that every API route or frontend workflow works.
 
+## 10. Decision: Document AI Use and Human Review
 
-\- The recorded automated test results cover only the tests that were run.
+**Decision:** Maintain a prompt history that distinguishes AI-assisted work, human review, and validation evidence.
 
-\- Full end-to-end coverage of every recruitment workflow has not been established by the evidence recorded here.
+**Reasoning:** Transparent documentation helps reviewers understand how AI was used and how generated suggestions were evaluated.
 
-\- Deployment availability and external service behavior can change.
+**Alternative considered:** Include only a general statement that AI was used.
 
-\- Screening results require appropriate human oversight.
+**Trade-off:** Maintaining a detailed record takes time. Reconstructed prompt records must be identified honestly rather than presented as complete verbatim transcripts when the original prompts are unavailable.
 
+**Evidence:** See `PROMPT_HISTORY.md` for the recorded AI-use history. Compare it with available conversation records, code changes, Git diffs, and test results before submission.
 
+## 11. Screening and Responsible Use
 
-\## 9. Further Improvements
+Screening functionality should support informed human review rather than automatically determine hiring outcomes without appropriate oversight.
 
+Recruitment decisions can significantly affect applicants. Screening results should therefore be reviewed for incorrect outputs, inconsistent treatment, and inappropriate use of candidate data.
 
+Any claims about fairness checks, bias mitigation, explainability, or access controls should be supported by implemented functionality and verifiable evidence. These safeguards should not be described as complete unless they have actually been implemented and tested.
 
-Potential improvements include broader API and browser-level tests, stronger validation of workflow transitions, improved observability, and additional safeguards for candidate data and screening decisions.
->>>>>>> fd555ee (docs: prepare recruitment system submission)
+## 12. Trade-Offs and Limitations
+
+The following limitations should be considered when evaluating the project:
+
+- Automated tests cover only the scenarios represented in the test suite.
+- A passing test suite does not guarantee the absence of defects.
+- A health endpoint confirms only the checks implemented by that endpoint.
+- A successful CORS header check for one origin and route does not prove that every endpoint or preflight request works.
+- Local build success does not prove that the latest deployed application works correctly.
+- Deployment behavior can differ from local behavior because of environment variables, hosting configuration, and browser restrictions.
+- Full end-to-end verification of every recruitment workflow has not been established by the recorded evidence.
+- Screening outputs require appropriate human oversight.
+- Any feature not demonstrated by source code or repeatable evidence should be described as unverified, incomplete, or out of scope.
+
+## 13. Further Improvements
+
+Potential improvements include:
+
+1. Expand API tests to cover success cases, invalid inputs, and error responses.
+2. Add broader browser-level and end-to-end tests for recruitment workflows.
+3. Strengthen validation of workflow transitions and business rules.
+4. Improve logging and observability to make deployment failures easier to diagnose.
+5. Review candidate-data handling, access controls, and privacy safeguards.
+6. Evaluate screening behavior for inconsistent or inappropriate outcomes.
+7. Add reproducible fresh-installation instructions and verify them in a clean environment.
+
+These are potential improvements, not claims that the work has already been completed.
+
+## 14. Questions to Prepare for Review
+
+1. Why were screening, scheduling, workflow, and offer handling separated into modules?
+2. Where are workflow transitions validated, and how are invalid transitions handled?
+3. How do the automated tests verify invalid inputs and edge cases?
+4. How does the frontend select the deployed backend URL?
+5. What does the health endpoint prove, and what does it not prove?
+6. How was a possible CORS issue distinguished from browser-side request blocking?
+7. Which AI suggestions were accepted, modified, or rejected, and how were the results validated?
+8. What are the current limitations, and which improvement would be prioritized next?
+
+## 15. Evidence References
+
+The following project artifacts can support a review of the design decisions:
+
+- **Source code:** Review the relevant files under `src/`, `api/`, and `frontend/`.
+- **Automated tests:** Review the test modules under `tests/`.
+- **Testing evidence:** See `TESTING.md`.
+- **AI-use documentation:** See `PROMPT_HISTORY.md`.
+- **Git history:** Confirm relevant commit references using `git log --oneline`.
+- **Deployment evidence:** Recheck the health endpoint and frontend deployment before submission.
+- **Outstanding issues:** Record actual failures and unverified behavior rather than assuming that all checks passed.
+
+This document describes the rationale and available evidence for the project's design. All implementation claims should remain consistent with the current repository and the results that can be reproduced.
