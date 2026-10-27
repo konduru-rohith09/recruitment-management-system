@@ -61,27 +61,36 @@ cd ..
 
 **Result:** Dependency-installation output has not been provided in the evidence available for this document. Run these commands if setup needs to be revalidated, and record any errors accurately.
 
-## 4. Automated Python tests
+## 4. Automated Python Tests
 
-Run from the repository root with `.venv` activated:
+Run the test suite from the repository root with the virtual environment activated:
 
 ```bat
 python -m pytest -v
 ```
 
-Optional coverage command, if `pytest-cov` is installed:
+### Verified result
+
+The test suite was executed on Windows using Python 3.11.0 and pytest 9.1.1.
+
+| Metric | Result |
+|---|---:|
+| Tests collected | 19 |
+| Passed | 19 |
+| Failed | 0 |
+| Runtime | 11.38 seconds |
+
+**Status: Passed.** All 19 tests completed successfully in the recorded run.
+
+The tests cover data generation, database models, offer management, reproducibility, interview scheduling, screening, validation, and recruitment workflow transitions.
+
+This result applies to the tested development environment and does not independently verify every deployed frontend or API workflow.
+
+To rerun the suite:
 
 ```bat
-python -m pytest --cov=src --cov-report=term-missing
+python -m pytest -v
 ```
-
-| Check | Result | Status |
-|---|---|---|
-| Python test suite (`python -m pytest -v`) | Test output was not provided; no pass/fail count can be claimed | **Not verified** |
-| Coverage report | No coverage output was provided | **Not run / not verified** |
-
-After running pytest, replace this row with the exact summary printed by pytest, including passed, failed, skipped, and error counts. If any tests fail, retain that information and document the next step rather than hiding the failure.
-
 ## 5. Frontend production build
 
 Run:
@@ -216,36 +225,38 @@ Do not repeatedly redeploy the backend if the evidence points to a browser-side 
 ### Health succeeds but the UI says “disconnected”
 
 Inspect the exact failing request. The health endpoint can work while another endpoint fails because of a different route, response format, authorization requirement, server error, or browser restriction.
+## 10. Known Verification Gaps
 
-## 10. Known verification gaps
-
-Based on the evidence currently available:
-
-- **Python tests:** Test files exist, but the latest full-suite result has not been provided.
-- **Frontend build:** A current `npm run build` result has not been provided.
-- **Health endpoint:** A successful `HTTP 200 OK` result was observed on 27 October 2026.
-- **CORS:** The tested Vercel origin was returned in the CORS header for `/health`.
-- **Full API coverage:** Not established by the health check alone.
-- **Full frontend workflow:** No complete end-to-end test result has been provided.
-- **Clean-install reproduction:** Not established from a fresh clone or clean environment.
-- **Browser-side block:** `ERR_BLOCKED_BY_CLIENT` was observed and Incognito reportedly worked; the exact extension/cause was not conclusively identified.
-
-These are evidence gaps, not necessarily application defects. Update them after running the corresponding checks.
-
-## 11. Final evidence summary
+The following items distinguish completed checks from checks that still need evidence.
 
 | Check | Current evidence | Status |
 |---|---|---|
-| Git working tree and branch | `git status` showed `main`, up to date with `origin/main`, and a clean working tree at the time of the check | Verified at that time |
-| Test files present | Multiple test modules were listed under `tests/` | Verified; passing status unknown |
-| Python test suite | No latest test output supplied | Not verified |
-| Frontend build | No latest build output supplied | Not verified |
-| Backend `/health` | `HTTP 200 OK`; `status: UP`; `database: HEALTHY` | Verified at recorded time |
-| CORS for tested Vercel origin on `/health` | Matching `access-control-allow-origin` header | Verified for that request |
-| Full API routes | No complete route-by-route results supplied | Not verified |
-| Full frontend workflow | No end-to-end result supplied | Not verified |
-| Fresh-clone setup | No clean-environment result supplied | Not verified |
+| Python test suite | 19 tests passed in 11.38 seconds | Verified |
+| Frontend production build | Latest `npm run build` output not recorded | Not verified |
+| Backend `/health` endpoint | HTTP 200; status `UP`; database `HEALTHY` in the recorded response | Verified at the recorded time |
+| CORS for the Vercel origin | Matching `access-control-allow-origin` header on `/health` | Verified for the tested request |
+| All API routes | No complete route-by-route test results recorded | Not fully verified |
+| Frontend end-to-end workflow | Complete end-to-end test result not recorded | Not verified |
+| Fresh-clone installation | Clean-environment test not recorded | Not verified |
+| Browser-side request blocking | `ERR_BLOCKED_BY_CLIENT` was observed; Incognito reportedly worked | Cause not conclusively identified |
 
+These gaps do not necessarily indicate defects. They identify checks for which complete evidence has not yet been recorded. Update this section when additional checks are performed.
+
+## 11. Final Evidence Summary
+
+| Check | Evidence | Status |
+|---|---|---|
+| Git branch and working tree | Previously reported as `main`, synchronized with `origin/main`, with a clean working tree | Verified at that time |
+| Test files | Test modules are present under `tests/` | Verified |
+| Python test suite | 19 passed, 0 failed, in 11.38 seconds | Passed |
+| Frontend production build | No latest build output recorded | Not verified |
+| Backend health endpoint | HTTP 200; `status: UP`; `database: HEALTHY` | Verified at recorded time |
+| CORS for the tested Vercel origin | Matching CORS origin header on `/health` | Verified for that request |
+| All API routes | Full route-by-route results not recorded | Not fully verified |
+| Complete frontend workflow | End-to-end result not recorded | Not verified |
+| Fresh-clone setup | No clean-environment result recorded | Not verified |
+
+A successful test suite provides evidence for the scenarios it covers. A successful health check verifies the health endpoint at the time tested; neither result guarantees that every deployed feature works correctly.
 ## 12. Submission standard
 
 A check is marked **verified** only for the specific command, route, environment, and time actually tested. A successful health endpoint is not proof that the whole system works. If a command has not been run, mark it **Not verified**. If it fails, preserve the result and explain the next step. This evidence-based approach is more credible than claiming that every check passed without output.
