@@ -1,618 +1,614 @@
-<<<<<<< HEAD
-# Recruitment Management System — AI Prompt Engineering & Human-in-the-Loop Log
+# AI Prompt History and Human-in-the-Loop Development Log
 
-## Important accuracy note
+## 1. Purpose and Accuracy Disclosure
 
-This document is a **reconstructed, project-specific prompt-engineering workflow**, not a verbatim transcript proving that every prompt below was used. It shows how a developer can collaborate with an LLM in 50 iterative steps while retaining human control. Before submission, replace any prompt that does not match your actual work, use original wording where available, and fill in the real commands, decisions, and results. Do not claim that a prompt was used or a test passed unless that is true.
+This document describes the AI-assisted development workflow for the Recruitment Management System, including representative prompts, human review, debugging, testing, and submission preparation.
 
-## How the workflow works
+**Important disclosure:** This is a reconstructed project-specific record, not a complete verbatim export of every prompt submitted to every AI tool. The representative prompts below illustrate a structured workflow; they must not be presented as proof that all 50 prompts were used.
 
-Each interaction follows a human-in-the-loop pattern:
+Where original prompts or responses are unavailable, the record should be labelled as reconstructed. Only claim that a prompt was used, a decision was made, or a test passed when the available evidence supports that claim.
 
-1. **Human defines the goal and constraints.**
-2. **AI proposes an approach or implementation.**
-3. **Human inspects the proposal and chooses what to accept, reject, or change.**
-4. **AI is asked to refine a specific issue using the available evidence.**
-5. **Human runs the code/tests and checks the actual outcome.**
-6. **The next prompt is based on that outcome, not on an assumption that the previous answer was correct.**
+## 2. Human-in-the-Loop Workflow
 
-The prompts below are written as an iterative workflow for this repository. The “Human action” and “Validation” sections must be edited to reflect what actually happened.
+The intended development process follows these steps:
 
+1. Define the requirement and constraints.
+2. Ask AI for an explanation, proposal, or targeted implementation.
+3. Review the response and compare it with the actual code.
+4. Accept, modify, or reject the suggestion.
+5. Run the relevant tests or manual checks.
+6. Record the actual result and remaining limitations.
 
-## Concrete project evidence already observed
+AI-generated code and explanations are suggestions, not proof of correctness. The developer remains responsible for the final implementation and its verification.
 
-The following items are grounded in the project work discussed during this conversation. They are examples of evidence to connect to relevant prompts—not proof that every reconstructed prompt below was used.
+## 3. Project Evidence
 
-- **Repository:** `konduru-rohith09/recruitment-management-system`, branch `main`.
-- **Observed commit history:** `7b66eac` (initial commit), `936757e` (frontend API URL environment configuration), `43c73bd` (deployed backend URL fallback). These are genuine commits shown by `git log`.
-- **Frontend configuration:** `frontend/src/App.jsx` uses `VITE_API_URL` and a fallback. The frontend is deployed on Vercel.
-- **Backend:** FastAPI deployed on Render at `https://recruitment-management-system-api.onrender.com`.
-- **Observed health response:** `curl.exe` returned HTTP `200 OK` and JSON reporting `status: UP` and `database: HEALTHY`.
-- **Observed CORS evidence:** a request with origin `https://recruitment-management-system-three.vercel.app` returned `access-control-allow-origin` with that same origin.
-- **Observed browser diagnosis:** Chrome showed `net::ERR_BLOCKED_BY_CLIENT`; the site worked in Incognito. This supports investigating browser-side blocking, but it does not by itself prove which extension caused it.
-- **Repository files observed locally:** `README.md`, `requirements.txt`, `Dockerfile`, `src/`, `api/`, `app/`, `frontend/`, `migrations/`, and a `tests/` directory containing test files for generation, models, offers, reproducibility, scheduling, screening, validation, and workflow.
-- **Not yet established by the evidence above:** that all tests pass now, that a clean-machine setup has been completed, or that every prompt in this document was used during original development.
+The following details were recorded during project development:
 
-### Example of evidence-based human-in-the-loop debugging
+- **Repository:** `konduru-rohith09/recruitment-management-system`
+- **Branch:** `main`
+- **Frontend:** React and Vite, deployed on Vercel.
+- **Backend:** FastAPI, deployed on Render.
+- **Frontend URL:** https://recruitment-management-system-three.vercel.app/
+- **Backend URL:** https://recruitment-management-system-api.onrender.com
+- **API documentation:** https://recruitment-management-system-api.onrender.com/docs
+- **Health endpoint:** https://recruitment-management-system-api.onrender.com/health
+- **Frontend API configuration:** The recorded implementation uses `VITE_API_URL` with a fallback in `frontend/src/App.jsx`.
+- **Repository areas:** `src/`, `api/`, `app/`, `frontend/`, `migrations/`, and `tests/`, along with project configuration and documentation files.
 
-**Observed symptom:** the deployed frontend reported an API connection failure.
+### Recorded debugging evidence
 
-**Evidence collected:** the frontend was using the deployed Render URL; the health endpoint returned HTTP 200; the CORS header allowed the exact Vercel origin; Chrome showed `ERR_BLOCKED_BY_CLIENT`; the site connected in Incognito.
+During deployment troubleshooting, the following observations were recorded:
 
-**Human decision:** do not keep changing backend CORS or redeploying without evidence. Compare browser contexts and inspect extensions/network errors first.
+- A request to the deployed backend health endpoint returned HTTP `200 OK`.
+- The health response reported `status: UP` and `database: HEALTHY`.
+- A request carrying the deployed Vercel origin returned a matching `access-control-allow-origin` response header.
+- Chrome displayed `net::ERR_BLOCKED_BY_CLIENT`.
+- The site was subsequently reported to connect in Incognito mode.
 
-**Conclusion supported by evidence:** the backend health endpoint and the tested CORS origin were responding correctly at the time of the check. Browser-side blocking was a plausible explanation for the normal-window failure. The exact blocking extension should not be claimed as identified unless it was isolated in a controlled test.
+**Conclusion supported by this evidence:** The health endpoint and the tested CORS response worked at the time of those checks. Browser-side blocking was a plausible explanation for the normal-browser failure, but the exact cause was not conclusively established.
 
-This kind of short evidence trail is more persuasive than a generic statement that “AI fixed the bug.” Add similar evidence trails for other important changes only when you have the actual command output, code diff, or test result.
+The recorded Git history also included commits identified as `7b66eac`, `936757e`, and `43c73bd`. Confirm current commit references with `git log --oneline` before using them as evidence.
 
----
+## 4. Representative Prompt History
 
-## Phase 1 — Define the problem and constrain the solution
+The following 50 entries are organized into eight phases. They are **representative prompt templates**, not a claim that each prompt was submitted verbatim or used during the original development.
 
-### 01. Start with the problem, not code
-**Prompt**
-> Act as a senior software engineer. I am building a Recruitment Management System. Before suggesting code, help me clarify the problem, intended users, core workflows, constraints, assumptions, and acceptance criteria. Separate facts I have provided from questions that need my decision. Do not invent requirements.
+For an actual submission, mark each relevant entry as **Original prompt**, **Reconstructed from actual work**, or **Proposed workflow**.
 
-**Human-in-the-loop:** I decide which requirements actually belong in the project and correct any assumptions that do not match the assignment.
+### Phase 1 — Requirements and scope
 
-**Next action:** Approve the requirements before moving to architecture.
+#### 01. Clarify the problem
 
-### 02. Convert the requirements into a workflow
-**Prompt**
-> Using only the requirements we confirmed, map the recruitment process from application intake through screening, scheduling, workflow updates, offer handling, and audit logging where supported. For each stage, show inputs, outputs, possible failures, and the next allowed action. Mark uncertain business rules for my decision.
+**Representative prompt:**
 
-**Human-in-the-loop:** I confirm the stages and remove steps that are outside the project scope.
+> Act as a senior software engineer. Help me clarify the problem, intended users, core workflows, constraints, assumptions, and acceptance criteria for a Recruitment Management System. Separate confirmed requirements from questions that need my decision. Do not invent requirements.
 
-**Validation:** Compare the workflow with the implemented modules and README.
+**Human review:** Confirm the requirements and correct assumptions that do not match the project brief.
 
-### 03. Define what is out of scope
-**Prompt**
-> Review the proposed scope and identify features that are essential versus optional. Prioritize a reliable, testable implementation over extra features. Explain the risks of adding each optional feature under a limited deadline. Do not implement anything yet.
+**Validation:** Compare the approved requirements with the implemented functionality.
 
-**Human-in-the-loop:** I choose the smallest scope that satisfies the project brief and defer nonessential features.
+#### 02. Map the recruitment workflow
 
-**Validation:** Confirm the final scope is reflected in the code and documentation.
+**Representative prompt:**
 
-### 04. Create testable acceptance criteria
-**Prompt**
-> Turn the approved requirements into observable acceptance criteria. Include success cases, invalid inputs, rejected state transitions, scheduling edge cases, and offer validation where applicable. Each criterion must state what a reviewer can observe. Do not use vague wording such as “works properly.”
+> Map the recruitment process through screening, interview scheduling, workflow tracking, offer handling, and audit logging where supported. Identify inputs, outputs, possible failures, and uncertain business rules.
 
-**Human-in-the-loop:** I review the criteria and ensure they describe the intended system rather than AI assumptions.
+**Human review:** Confirm the workflow stages and remove features outside the project scope.
 
-**Validation:** Map each criterion to a test or a manual check.
+**Validation:** Compare the proposed workflow with the actual source files.
 
-### 05. Ask for an architecture proposal, not a full application dump
-**Prompt**
-> Propose a maintainable repository structure for this Python Recruitment Management System. Consider models, database access, data generation, screening, scheduling, workflow, offers, audit, validation, API, frontend, migrations, and tests where relevant. Explain responsibilities and dependency direction. Do not generate all files at once.
+#### 03. Prioritize scope
 
-**Human-in-the-loop:** I select the module boundaries and ask follow-up questions before implementation.
+**Representative prompt:**
 
-**Validation:** Compare the proposal with the actual repository structure.
+> Separate essential requirements from optional features. Prioritize reliable, testable functionality and explain the risks of adding optional features under a limited deadline.
 
----
+**Human review:** Select the work that best satisfies the project requirements.
 
-## Phase 2 — Challenge and refine the design
+**Validation:** Check the implementation against the agreed scope.
 
-### 06. Ask AI to critique its own proposal
-**Prompt**
-> Critically review the architecture you just proposed. Identify possible overengineering, duplicated responsibilities, circular imports, and features that are not justified by the requirements. Give me the simplest viable design and explain what you removed.
+#### 04. Define acceptance criteria
 
-**Human-in-the-loop:** I do not accept the proposal just because it sounds sophisticated; I decide which simplifications make sense.
+**Representative prompt:**
 
-**Validation:** Ensure each retained module has a clear purpose.
+> Convert the confirmed requirements into observable acceptance criteria. Include valid inputs, invalid inputs, rejected workflow transitions, scheduling edge cases, and offer validation where applicable.
 
-### 07. Define module contracts
-**Prompt**
-> For each approved module, specify its responsibility, inputs, outputs, expected errors, and dependencies. Keep business rules separate from HTTP handlers and persistence where practical. Show one example call flow without writing implementation code yet.
+**Human review:** Ensure the criteria describe the intended application rather than assumptions.
 
-**Human-in-the-loop:** I check that each module has a focused responsibility and that the interfaces are understandable.
+**Validation:** Map criteria to tests or manual checks.
 
-**Validation:** Use the contracts to review function signatures and imports.
+#### 05. Propose a repository structure
 
-### 08. Design models from actual requirements
-**Prompt**
-> Inspect the model requirements I provide and propose only the entities and fields needed for this application. For each field, explain its type, whether it is required, and any validation rule. Do not add conventional HR fields unless the requirements justify them.
+**Representative prompt:**
 
-**Human-in-the-loop:** I approve fields and relationships and reject unnecessary data collection.
+> Propose a maintainable Python recruitment-system structure covering models, database access, screening, scheduling, workflow, offers, audit, validation, API, frontend, migrations, and tests where relevant. Explain each component's responsibility without generating the entire application at once.
 
-**Validation:** Compare the model definitions with migrations and tests.
+**Human review:** Evaluate the proposed module boundaries.
 
-### 09. Identify ambiguous rules before implementation
-**Prompt**
-> List any business rules that remain ambiguous in the model or workflow design. For each one, give the possible interpretations and the consequence of choosing each. Ask me to choose rather than silently selecting a rule.
+**Validation:** Compare the proposal with the actual repository.
 
-**Human-in-the-loop:** I make the product decisions that require context and record the chosen interpretation.
+### Phase 2 — Architecture and design
 
-**Validation:** Ensure code and documentation use the same interpretation.
+#### 06. Critique the architecture
 
-### 10. Plan the test strategy early
-**Prompt**
-> Based on the approved requirements and module contracts, propose a test plan covering unit behavior, integration boundaries, invalid data, workflow transitions, scheduling, offers, and reproducibility where applicable. Distinguish required tests from optional tests and explain why each high-priority test matters.
+**Representative prompt:**
 
-**Human-in-the-loop:** I prioritize tests based on risk and deadline, not merely the number of tests.
+> Review the proposed architecture for overengineering, duplicated responsibilities, circular dependencies, and unjustified features. Recommend the simplest viable design.
 
-**Validation:** Check that the actual test suite covers the most important acceptance criteria.
+**Human review:** Accept only simplifications that fit the requirements.
 
----
+**Validation:** Check that every retained module has a clear purpose.
 
-## Phase 3 — Implement in small, reviewable units
+#### 07. Define module interfaces
 
-### 11. Ask for one module at a time
-**Prompt**
-> Help implement the first selected module using the existing project conventions. Work only on the file or function I provide. Explain the design briefly, preserve unrelated behavior, and list assumptions. If required source context is missing, ask me for it instead of inventing the existing code.
+**Representative prompt:**
 
-**Human-in-the-loop:** I provide the real source, review the patch, and decide whether it fits the architecture.
+> For each relevant module, describe its responsibility, inputs, outputs, expected errors, and dependencies. Keep business rules separate from HTTP handlers and persistence where practical.
 
-**Validation:** Inspect the diff before accepting the implementation.
+**Human review:** Confirm that the interfaces are understandable.
 
-### 12. Ask for a readable implementation
-**Prompt**
-> Review this proposed implementation for readability, naming, duplication, and unnecessary complexity. Prefer clear code over clever abstractions. Explain each recommended change and avoid changing behavior unless you identify a specific reason.
+**Validation:** Compare the description with actual function signatures and imports.
 
-**Human-in-the-loop:** I compare the suggested refactor with the original and keep changes that improve maintainability without adding risk.
+#### 08. Review data models
 
-**Validation:** Re-run relevant tests after accepted changes.
+**Representative prompt:**
 
-### 13. Implement validation explicitly
-**Prompt**
-> For this module, list the valid inputs, invalid inputs, boundary cases, and expected outcomes. Then suggest validation code that follows the project's existing conventions. Distinguish malformed input from a valid input that violates a business rule.
+> Review the supplied model requirements and propose only the entities and fields the application needs. Explain field types, required values, relationships, and validation rules.
 
-**Human-in-the-loop:** I confirm the rules before coding and reject validation that changes the intended business behavior.
+**Human review:** Reject unnecessary fields and data collection.
+
+**Validation:** Compare models with migrations and tests.
+
+#### 09. Identify ambiguous business rules
+
+**Representative prompt:**
+
+> Identify ambiguous business rules, explain possible interpretations and their consequences, and ask for a decision instead of silently choosing an interpretation.
+
+**Human review:** Make the decisions that require project context.
+
+**Validation:** Confirm that code and documentation use the same rules.
+
+#### 10. Plan testing
+
+**Representative prompt:**
+
+> Propose a test plan covering module behavior, integration boundaries, invalid inputs, workflow transitions, scheduling, offers, and reproducibility where applicable. Distinguish essential tests from optional tests.
+
+**Human review:** Prioritize testing according to risk.
+
+**Validation:** Compare the test suite with the acceptance criteria.
+
+### Phase 3 — Implementation and business logic
+
+#### 11. Implement one module at a time
+
+**Representative prompt:**
+
+> Help implement the selected module using the existing project conventions. Work only on the supplied file or function, preserve unrelated behavior, explain assumptions, and ask for missing source context rather than inventing it.
+
+**Human review:** Inspect the proposed changes before accepting them.
+
+**Validation:** Review the Git diff and run relevant tests.
+
+#### 12. Improve code readability
+
+**Representative prompt:**
+
+> Review this implementation for naming, readability, duplication, and unnecessary complexity. Explain each proposed change and avoid altering behavior without a specific reason.
+
+**Human review:** Keep changes that improve maintainability without adding unnecessary risk.
+
+**Validation:** Run relevant regression tests.
+
+#### 13. Review validation rules
+
+**Representative prompt:**
+
+> Identify valid inputs, invalid inputs, boundary cases, and expected outcomes for this module. Distinguish malformed input from a valid input that violates a business rule.
+
+**Human review:** Confirm the intended validation behavior.
 
 **Validation:** Test valid and invalid cases.
 
-### 14. Ask for edge cases before calling a module complete
-**Prompt**
-> Do not rewrite the module yet. Review it for edge cases such as missing values, wrong types, empty collections, duplicate identifiers, invalid dates, and unexpected states where relevant. Rank findings by severity and show a minimal example for each likely defect.
+#### 14. Identify edge cases
 
-**Human-in-the-loop:** I decide which findings apply to the actual feature and request a fix only for confirmed issues.
+**Representative prompt:**
 
-**Validation:** Add a regression test for each confirmed bug where feasible.
+> Review the supplied module for relevant edge cases, including missing values, wrong types, empty collections, duplicate identifiers, invalid dates, and unexpected states. Rank possible defects by severity.
 
-### 15. Keep screening rules explainable
-**Prompt**
-> Review the candidate-screening logic against the exact criteria I provide. For each criterion, show how the input affects the outcome and what happens if the data is missing. Do not invent hiring criteria or use protected personal characteristics as screening shortcuts.
+**Human review:** Confirm which findings apply to the actual implementation.
 
-**Human-in-the-loop:** I verify that the criteria are legitimate project requirements and that outcomes are understandable.
+**Validation:** Add regression tests for confirmed defects where feasible.
+
+#### 15. Review screening logic
+
+**Representative prompt:**
+
+> Review candidate-screening logic against the supplied criteria. Explain how each criterion affects the outcome and how missing data is handled. Do not invent hiring criteria or use protected characteristics as screening shortcuts.
+
+**Human review:** Confirm that screening rules match legitimate project requirements.
 
 **Validation:** Test representative eligible, ineligible, and incomplete records.
 
-### 16. Make scheduling assumptions explicit
-**Prompt**
-> Review the scheduling code for date/time validation, timezone assumptions, duplicate slots, and conflicts if those features are supported. Separate confirmed defects from optional enhancements. Do not claim concurrent booking safety without evidence from the implementation.
+#### 16. Review scheduling behavior
 
-**Human-in-the-loop:** I decide which scheduling rules are required and which need further implementation.
+**Representative prompt:**
 
-**Validation:** Run the scheduling tests and record any untested concurrency behavior as a limitation.
+> Review scheduling logic for date and time validation, timezone assumptions, duplicate slots, and conflicts where supported. Distinguish confirmed defects from optional improvements.
 
-### 17. Centralize workflow transition rules
-**Prompt**
-> Review the workflow state transitions. Identify the allowed and disallowed transitions based on the requirements. Recommend a single explicit transition policy and clear errors for rejected transitions. Preserve current public interfaces unless a change is necessary.
+**Human review:** Confirm the required scheduling rules.
 
-**Human-in-the-loop:** I approve the state diagram and verify that it matches the intended business process.
+**Validation:** Run scheduling tests and document untested behavior.
 
-**Validation:** Test both successful and rejected transitions.
+#### 17. Review workflow transitions
 
-### 18. Keep offer rules aligned with scope
-**Prompt**
-> Review offer management using only the states and required fields present in the requirements and code. Identify invalid transitions and missing-field cases. Do not add approval, acceptance, or expiration behavior unless the project actually supports it.
+**Representative prompt:**
 
-**Human-in-the-loop:** I decide which offer behaviors are in scope and document unsupported ones.
+> Identify allowed and disallowed workflow transitions based on the actual requirements. Recommend explicit transition rules and clear errors for rejected transitions.
 
-**Validation:** Run offer tests and inspect actual state changes.
+**Human review:** Confirm that the transition policy matches the intended workflow.
 
-### 19. Review audit data for usefulness and privacy
-**Prompt**
-> Review the audit-event design. Identify which meaningful state changes should be recorded and what minimal context is needed to understand them later. Avoid storing credentials, tokens, or unnecessary personal data. Distinguish implemented audit events from recommended future work.
+**Validation:** Test successful and rejected transitions.
 
-**Human-in-the-loop:** I select useful events and check the privacy implications of logged fields.
+#### 18. Review offer management
 
-**Validation:** Inspect actual events from representative operations.
+**Representative prompt:**
 
-### 20. Make data generation reproducible
-**Prompt**
-> Review the project's data-generation process. Explain whether it inserts, replaces, or appends records, and identify how a seed or deterministic input affects repeatability. Recommend safeguards against accidental destructive changes. Do not claim reproducibility until it is tested.
+> Review offer handling using the states and required fields present in the requirements and code. Identify invalid transitions and missing-field cases without inventing unsupported functionality.
 
-**Human-in-the-loop:** I choose safe behavior for local development and ensure production data is not accidentally overwritten.
+**Human review:** Confirm which offer behaviors are in scope.
 
-**Validation:** Run the generator in a safe test environment and record what happens.
+**Validation:** Run offer tests and inspect the actual state changes.
 
----
+#### 19. Review audit events
 
-## Phase 4 — Connect the backend and frontend
+**Representative prompt:**
 
-### 21. Check the API contract
-**Prompt**
-> Compare the actual API routes and request/response schemas with the frontend's expectations. Identify mismatched field names, status codes, query parameters, pagination, and error formats. Cite the relevant source locations and propose the smallest correction.
+> Review audit-event handling. Identify meaningful state changes to record and the minimum context needed for traceability. Avoid storing credentials, tokens, or unnecessary personal information.
 
-**Human-in-the-loop:** I inspect both sides and choose a fix based on the actual contract.
+**Human review:** Evaluate event usefulness and privacy implications.
+
+**Validation:** Inspect actual audit events from representative operations.
+
+#### 20. Review reproducible data generation
+
+**Representative prompt:**
+
+> Review the data-generation process. Explain whether it inserts, replaces, or appends records and how deterministic inputs affect repeatability. Identify safeguards against accidental destructive changes.
+
+**Human review:** Confirm safe behavior for development and testing.
+
+**Validation:** Test in a safe environment and record the observed behavior.
+
+### Phase 4 — API and frontend integration
+
+#### 21. Compare API contracts
+
+**Representative prompt:**
+
+> Compare the actual API routes and request/response schemas with the frontend's expectations. Identify mismatched field names, status codes, query parameters, and error formats using the supplied source code.
+
+**Human review:** Inspect both sides before choosing a fix.
 
 **Validation:** Test the affected route directly and through the frontend.
 
-### 22. Make frontend configuration environment-aware
-**Prompt**
-> Review the React/Vite API base URL configuration. Use `VITE_API_URL` for the deployed backend, keep local development understandable, and avoid a production fallback to localhost. Explain which changes require a new Vite build. Do not expose backend-only secrets through `VITE_` variables.
+#### 22. Review frontend API configuration
 
-**Human-in-the-loop:** I update the configuration and verify the environment variable in the hosting dashboard.
+**Representative prompt:**
 
-**Validation:** Inspect the deployed request URL in the browser Network panel.
+> Review the React/Vite API base URL configuration. Use `VITE_API_URL` for the deployed backend, keep local development understandable, avoid an incorrect production localhost fallback, and explain which changes require a rebuild.
 
-### 23. Handle API errors without guessing
-**Prompt**
-> Review the frontend's API error handling. Distinguish HTTP errors from network failures, CORS rejections, browser-extension blocks, and malformed responses where evidence allows. Avoid telling users that the backend is down unless the available evidence supports that conclusion.
+**Human review:** Verify the actual configuration and deployment settings.
 
-**Human-in-the-loop:** I compare messages with real failures and remove misleading diagnoses.
+**Validation:** Inspect the request URL in the browser Network panel.
 
-**Validation:** Trigger or simulate failure cases and inspect the displayed result.
+#### 23. Improve API error handling
 
-### 24. Verify loading and empty states
-**Prompt**
-> Inspect the dashboard and list components for loading, empty, success, and error states. Identify cases where stale or missing data could be mistaken for current data. Suggest focused changes without redesigning unrelated UI.
+**Representative prompt:**
 
-**Human-in-the-loop:** I decide which UX changes matter for the assignment.
+> Review frontend API error handling. Distinguish HTTP errors, network failures, CORS rejections, browser-side request blocks, and malformed responses where the evidence allows. Do not label the backend as unavailable without supporting evidence.
 
-**Validation:** Manually check the states supported by the current application.
+**Human review:** Ensure user-facing messages reflect observed failures.
 
-### 25. Check URL construction and query parameters
-**Prompt**
-> Trace the frontend requests for health, metrics, anomalies, and application lists in the current source. Verify base URL joining, trailing slashes, query parameters, and response parsing. Do not infer the request from a filename; show the actual code path.
+**Validation:** Inspect relevant error responses and browser behavior.
 
-**Human-in-the-loop:** I compare the source with requests visible in DevTools.
+#### 24. Review loading and empty states
 
-**Validation:** Confirm the final URLs and returned responses.
+**Representative prompt:**
 
----
+> Inspect the frontend for loading, empty, success, and error states. Identify cases where missing or stale data could be mistaken for current data.
 
-## Phase 5 — Use tests to drive correction
+**Human review:** Prioritize improvements that fit the project scope.
 
-### 26. Ask for test cases before a large refactor
-**Prompt**
-> Before suggesting a refactor of this module, identify its current observable behavior and the tests needed to preserve it. Separate intended behavior from accidental behavior. Do not change implementation yet.
+**Validation:** Manually check the states supported by the application.
 
-**Human-in-the-loop:** I decide which current behaviors are requirements and which are known defects.
+#### 25. Verify request construction
 
-**Validation:** Add or run tests before refactoring.
+**Representative prompt:**
 
-### 27. Review assertions, not just test execution
-**Prompt**
-> Review these tests for meaningful assertions, isolation, deterministic data, and negative cases. Identify tests that can pass without verifying the intended behavior. Suggest targeted improvements and do not weaken assertions merely to make the suite pass.
+> Trace the actual frontend API requests. Verify base URL joining, trailing slashes, query parameters, and response parsing from the source code rather than inferring behavior from filenames.
 
-**Human-in-the-loop:** I inspect each suggested test and preserve checks that protect real requirements.
+**Human review:** Compare source code with browser Network observations.
 
-**Validation:** Run the relevant tests and record actual output.
+**Validation:** Confirm actual request URLs and responses.
 
-### 28. Turn a failing test into a diagnosis
-**Prompt**
-> Here is the exact failing test output and relevant source. Separate the observed symptom, possible causes, and the cause supported by evidence. Suggest the smallest fix and one regression test. If the evidence is insufficient, tell me what to inspect next rather than guessing.
+### Phase 5 — Testing and debugging
 
-**Human-in-the-loop:** I provide real logs, inspect the proposed cause, and decide whether the patch is justified.
+#### 26. Plan tests before refactoring
 
-**Validation:** Confirm the test fails before the fix when feasible and passes after the fix.
+**Representative prompt:**
 
-### 29. Check for regressions
-**Prompt**
-> Review this diff for unintended changes to existing behavior. Identify which tests should be rerun and why. Pay particular attention to public interfaces, validation, database behavior, and workflow state transitions. Do not assume a change is safe just because the targeted test passes.
+> Identify the observable behavior and tests needed to preserve it before refactoring this module. Separate intended behavior from accidental behavior.
 
-**Human-in-the-loop:** I inspect the diff and run the selected regression tests.
+**Human review:** Decide which existing behaviors are requirements.
 
-**Validation:** Record the actual test summary, including failures and skips.
+**Validation:** Run or add tests before changing the implementation.
 
-### 30. Check determinism
-**Prompt**
-> Review the reproducibility tests and identify possible nondeterminism from randomness, timestamps, iteration order, environment variables, or external services. Recommend specific controls only where appropriate and do not hide real variability by weakening assertions.
+#### 27. Review test quality
 
-**Human-in-the-loop:** I decide which variability should be controlled and which should be documented.
+**Representative prompt:**
 
-**Validation:** Run relevant tests more than once and compare outcomes.
+> Review these tests for meaningful assertions, isolation, deterministic data, and negative cases. Identify tests that could pass without verifying the intended behavior.
 
-### 31. Run tests and interpret evidence
-**Prompt**
-> Based on the repository's actual test setup, give me the appropriate command to run the suite in my active environment. Explain how to interpret failures, errors, and skipped tests. Do not report a test count or success result unless it appears in the command output I provide.
+**Human review:** Preserve meaningful assertions rather than weakening them to make tests pass.
 
-**Human-in-the-loop:** I run the command locally and share only the non-sensitive result summary.
+**Validation:** Run the affected tests.
 
-**Validation:** Record the real command and output.
+#### 28. Diagnose a failing test
 
-### 32. Prioritize uncovered tests
-**Prompt**
-> Given the current tests and confirmed requirements, rank the most important uncovered behaviors by impact and likelihood. Distinguish a coverage gap from a confirmed bug. Recommend a small next set of tests that improves confidence without adding tests for unsupported features.
+**Representative prompt:**
 
-**Human-in-the-loop:** I select the next tests based on risk and available time.
+> Given the exact failing test output and relevant source code, separate the observed symptom from possible causes. Recommend the smallest evidence-supported fix and a regression test. Ask for additional evidence if the cause remains uncertain.
 
-**Validation:** Track which tests were added and which gaps remain.
+**Human review:** Verify that the proposed diagnosis matches the actual code and output.
 
----
+**Validation:** Re-run the failing test after the fix.
 
-## Phase 6 — Database, configuration, and deployment
+#### 29. Check for regressions
 
-### 33. Review migration safety
-**Prompt**
-> Inspect the actual migration configuration and scripts. Explain what schema changes they make, whether they are reversible, and which operations could lose data. Do not recommend running a production migration without confirming the target environment and recovery plan.
+**Representative prompt:**
 
-**Human-in-the-loop:** I review the target database and avoid running risky changes without a backup/recovery plan.
+> Review this diff for unintended changes to public interfaces, validation, database behavior, and workflow transitions. Identify which regression tests should be rerun.
 
-**Validation:** Test migrations in a safe environment where possible.
+**Human review:** Inspect the diff and choose the appropriate tests.
 
-### 34. Protect configuration secrets
-**Prompt**
-> Review the required environment variables and `.env.example`. Use placeholder values only in documentation, confirm the real `.env` is ignored by Git, and distinguish frontend-public configuration from backend secrets. Never ask me to paste credentials or print secret values.
+**Validation:** Record actual test results.
 
-**Human-in-the-loop:** I inspect configuration locally without sharing secret contents.
+#### 30. Review determinism
+
+**Representative prompt:**
+
+> Review reproducibility tests for randomness, timestamps, iteration order, environment variables, and external services. Recommend controls only where they are appropriate.
+
+**Human review:** Decide which sources of variability should be controlled.
+
+**Validation:** Run the relevant tests more than once and compare results.
+
+#### 31. Interpret test output
+
+**Representative prompt:**
+
+> Explain the appropriate test command for the repository and how to interpret failures, errors, and skipped tests. Do not report a test count or successful result unless the actual output supports it.
+
+**Human review:** Run the command and inspect the result.
+
+**Validation:** Record the command and real summary.
+
+#### 32. Identify test coverage gaps
+
+**Representative prompt:**
+
+> Rank the most important untested behaviors based on confirmed requirements and risk. Distinguish a coverage gap from a confirmed bug and recommend a small set of useful additional tests.
+
+**Human review:** Choose the next tests based on impact and available time.
+
+**Validation:** Record which gaps were addressed and which remain.
+
+### Phase 6 — Database, configuration, and deployment
+
+#### 33. Review migration safety
+
+**Representative prompt:**
+
+> Inspect the migration configuration and scripts. Explain the schema changes, reversibility, and possible data-loss risks. Do not recommend production migrations without a confirmed target and recovery plan.
+
+**Human review:** Verify the target environment and recovery approach.
+
+**Validation:** Test migrations safely where possible.
+
+#### 34. Protect secrets
+
+**Representative prompt:**
+
+> Review environment-variable requirements and `.env.example`. Use placeholders in documentation, confirm that the real `.env` is excluded from Git, and distinguish frontend-public configuration from backend secrets.
+
+**Human review:** Inspect local configuration without exposing credentials.
 
 **Validation:** Check Git tracking and example-file contents.
 
-### 35. Verify container setup
-**Prompt**
-> Inspect the Dockerfile, dependency files, working directory, startup command, port configuration, and runtime assumptions. Suggest only changes supported by the files. Provide commands to build and run locally and describe what observable result confirms startup.
+#### 35. Review Docker configuration
 
-**Human-in-the-loop:** I decide whether Docker is part of the required reviewer workflow and run the build if available.
+**Representative prompt:**
 
-**Validation:** Record whether the image build and container run were actually successful.
+> Inspect the Dockerfile, dependency files, working directory, startup command, port configuration, and runtime assumptions. Suggest changes only when supported by the supplied files.
 
-### 36. Verify backend hosting
-**Prompt**
-> Help me inspect the Render backend configuration: start command, dependencies, port binding, environment variables, health endpoint, and logs. Separate code defects from hosting configuration issues and do not ask for secret values.
+**Human review:** Determine whether Docker is part of the required setup.
 
-**Human-in-the-loop:** I inspect the real settings and logs and apply only evidence-supported changes.
+**Validation:** Record actual build and startup results if tested.
 
-**Validation:** Check the deployed health endpoint and one or more real API routes.
+#### 36. Review Render deployment
 
-### 37. Verify frontend hosting
-**Prompt**
-> Help me verify Vercel's root directory, build command, output directory, production branch, deployed commit, and `VITE_API_URL`. Explain which changes require a frontend redeployment and how to confirm the deployed build.
+**Representative prompt:**
 
-**Human-in-the-loop:** I compare Vercel's actual settings and deployment commit with the repository.
+> Help inspect the Render backend configuration, including startup command, dependencies, port binding, environment variables, health endpoint, and logs. Distinguish code defects from hosting configuration issues.
 
-**Validation:** Open the deployed site and inspect the browser's request URL.
+**Human review:** Inspect actual settings and logs without sharing secret values.
 
-### 38. Diagnose CORS systematically
-**Prompt**
-> The deployed frontend cannot fetch from the deployed FastAPI backend. Guide me one step at a time through the browser Console, Network request, exact origin, preflight behavior, and backend response headers. Distinguish CORS from extension blocks and server errors. Do not recommend changing configuration until the evidence supports it.
+**Validation:** Check the health endpoint and relevant API routes.
 
-**Human-in-the-loop:** I run the proposed diagnostic command and report the real output before making another change.
+#### 37. Review Vercel deployment
 
-**Validation:** Compare the tested origin with the returned `access-control-allow-origin` header and test the actual browser request.
+**Representative prompt:**
 
-### 39. Interpret a health check correctly
-**Prompt**
-> Explain how to use `curl.exe` or a browser to check the deployed health endpoint. Tell me what HTTP status, JSON body, and response headers mean, and what a successful health check does not prove about other routes or frontend behavior.
+> Help verify Vercel's root directory, build command, output directory, production branch, deployed commit, and `VITE_API_URL`. Explain how to confirm that the latest build is deployed.
 
-**Human-in-the-loop:** I run the command and record its actual result.
+**Human review:** Compare hosting settings with the repository.
 
-**Validation:** Test additional routes rather than treating health alone as full-system proof.
+**Validation:** Open the deployed site and inspect its requests.
 
-### 40. Investigate a browser-only block
-**Prompt**
-> Chrome reports `ERR_BLOCKED_BY_CLIENT` for an API request. Help me test whether an extension or privacy filter is involved by comparing normal browsing and Incognito, inspecting DevTools, and checking the backend independently. Explain what each result proves and what remains uncertain.
+#### 38. Diagnose CORS systematically
 
-**Human-in-the-loop:** I compare normal Chrome with Incognito and test one extension at a time instead of changing deployment settings at random.
+**Representative prompt:**
 
-**Validation:** Record the actual browser behavior and the cause only if the evidence identifies it.
+> Guide me through diagnosing frontend-to-backend connectivity using the browser Console, Network panel, exact origin, preflight behavior, and response headers. Distinguish CORS errors from browser-side blocks and server errors.
 
----
+**Human review:** Gather evidence before changing configuration.
 
-## Phase 7 — Documentation and engineering reasoning
+**Validation:** Compare the tested origin with the returned CORS header and verify the browser request.
 
-### 41. Improve the setup guide
-**Prompt**
-> Review the existing README from the perspective of a reviewer who has never seen this project. Identify missing prerequisites, installation commands, environment configuration, database setup, startup instructions, tests, and troubleshooting. Use commands supported by the actual repository and flag unverified instructions.
+#### 39. Interpret health checks
 
-**Human-in-the-loop:** I follow the guide and correct steps that fail on my environment.
+**Representative prompt:**
 
-**Validation:** Verify setup steps from a fresh clone or clean environment where feasible.
+> Explain how to check the deployed health endpoint with `curl.exe` or a browser. Clarify what the HTTP status, JSON body, and response headers prove and what they do not prove.
 
-### 42. Explain a design decision
-**Prompt**
-> Help me explain the actual architecture and two or three important design choices. For each choice, state the problem, the chosen approach, an alternative, and the trade-off. Base the explanation on the current code and do not claim a pattern is implemented unless it is visible in the repository.
+**Human review:** Run the command and record the real response.
 
-**Human-in-the-loop:** I ensure I understand and can defend every decision in my own words.
+**Validation:** Check additional routes instead of treating health as proof of full-system functionality.
 
-**Validation:** Link each explanation to a relevant source file, test, or configuration.
+#### 40. Investigate browser-side blocking
 
-### 43. Document limitations honestly
-**Prompt**
-> Help me classify features as implemented, partially implemented, not implemented, or not tested based on the source and evidence I provide. Identify operational limitations and edge cases. Do not describe planned work as completed work.
+**Representative prompt:**
 
-**Human-in-the-loop:** I correct statuses that overstate what the application can do.
+> Chrome reports `ERR_BLOCKED_BY_CLIENT` for an API request. Help determine whether browser-side blocking is involved by comparing normal browsing and Incognito mode, inspecting DevTools, and checking the backend independently.
 
-**Validation:** Check every claim against the code and test results.
+**Human review:** Compare browser behavior and investigate extensions before changing deployment settings.
 
-### 44. Create reviewer verification steps
-**Prompt**
-> Write a concise verification checklist using actual repository commands. Include prerequisites, setup, starting the application, running tests, and checking key behavior. Give an observable expected result for each step and mark any step that depends on external credentials or services.
+**Validation:** Claim a specific cause only if a controlled test identifies it.
 
-**Human-in-the-loop:** I run each step and remove or correct any instruction that is not reproducible.
+### Phase 7 — Documentation and engineering reasoning
+
+#### 41. Improve the README
+
+**Representative prompt:**
+
+> Review the README from the perspective of a reviewer who has never seen this project. Identify missing prerequisites, installation commands, environment configuration, database setup, startup instructions, tests, and troubleshooting. Flag unverified instructions.
+
+**Human review:** Follow the instructions and correct steps that fail.
+
+**Validation:** Verify the setup in a clean environment where feasible.
+
+#### 42. Explain design decisions
+
+**Representative prompt:**
+
+> Explain the actual architecture and important design choices. For each choice, describe the problem, chosen approach, alternative, and trade-off. Do not claim a design pattern is implemented unless the code demonstrates it.
+
+**Human review:** Ensure that each decision can be explained in the developer's own words.
+
+**Validation:** Connect explanations to source files or tests.
+
+#### 43. Document limitations honestly
+
+**Representative prompt:**
+
+> Classify features as implemented, partially implemented, not implemented, or not tested based on the source and evidence provided. Do not describe planned work as completed work.
+
+**Human review:** Correct statuses that overstate application capabilities.
+
+**Validation:** Check each claim against code and results.
+
+#### 44. Prepare reviewer verification steps
+
+**Representative prompt:**
+
+> Write a verification checklist using actual repository commands. Include prerequisites, setup, application startup, tests, and key behavior. State the observable expected result and identify steps that depend on external services.
+
+**Human review:** Correct any instruction that is not reproducible.
 
 **Validation:** Keep the checklist aligned with actual behavior.
 
-### 45. Inspect the final diff for risk
-**Prompt**
-> Review the current Git diff for secrets, generated files, unrelated edits, weakened tests, unsupported README claims, and accidental deployment changes. Group findings by severity and recommend the smallest safe corrections. Base the review on the actual diff, not assumptions about files you have not seen.
+#### 45. Review the final Git diff
 
-**Human-in-the-loop:** I inspect the findings and decide which changes to accept.
+**Representative prompt:**
 
-**Validation:** Re-run relevant tests after corrections and inspect the diff again.
+> Review the current Git diff for secrets, generated files, unrelated edits, weakened tests, unsupported documentation claims, and accidental deployment changes. Recommend the smallest safe corrections based on the actual diff.
 
----
+**Human review:** Inspect findings before accepting changes.
 
-## Phase 8 — Git history, AI transparency, and final review
+**Validation:** Re-run relevant tests and inspect the final diff.
 
-### 46. Create truthful, meaningful commits
-**Prompt**
-> Review the actual changes and suggest logical commit groupings with accurate messages. Do not fabricate development history, backdate commits, or split changes merely to make the history look larger. Group related real changes such as documentation, tests, or fixes.
+### Phase 8 — Git history and submission readiness
 
-**Human-in-the-loop:** I decide when a change is ready and commit only work that actually happened.
+#### 46. Prepare meaningful commits
 
-**Validation:** Check `git status` and `git log --oneline` after committing.
+**Representative prompt:**
 
-### 47. Record AI's role accurately
-**Prompt**
-> Help me document each real AI interaction by separating my prompt, the response or code suggestion, what I personally accepted or changed, and how I checked it. Mark reconstructed wording clearly. Do not invent prompts, decisions, test results, or claims about independent implementation.
+> Review the actual changes and suggest accurate commit messages and logical groupings. Do not fabricate development history or create commits merely to make the history look larger.
 
-**Human-in-the-loop:** I compare the log with the conversations and my code changes and remove inaccurate entries.
+**Human review:** Commit only genuine work.
 
-**Validation:** Check that the document is honest and that evidence supports its claims.
+**Validation:** Inspect `git status` and `git log --oneline`.
 
-### 48. Prepare to explain the work myself
-**Prompt**
-> Interview me one question at a time about the architecture, models, validation, scheduling, workflow, offers, persistence, tests, deployment, and limitations. Ask me to explain why I chose each approach and what alternatives I considered. Correct misunderstandings, but do not write fictional personal experience for me.
+#### 47. Document AI use accurately
 
-**Human-in-the-loop:** I answer in my own words and study any concept I cannot explain confidently.
+**Representative prompt:**
 
-**Validation:** Rehearse against the actual source code.
+> Help document each real AI interaction by separating the prompt, AI contribution, human changes, and validation evidence. Mark reconstructed wording clearly and do not invent prompts or test results.
 
-### 49. Rehearse a technical walkthrough
-**Prompt**
-> Build a short walkthrough of the actual repository: the problem, architecture, one representative business flow, validation and tests, deployment, AI assistance, and known limitations. For each claim, identify a file, test, command, or live behavior that demonstrates it. Flag any claim without evidence.
+**Human review:** Compare the record with available conversation history and code changes.
 
-**Human-in-the-loop:** I rehearse the flow and remove claims I cannot demonstrate.
+**Validation:** Ensure the record does not overstate what happened.
 
-**Validation:** Run the walkthrough using the current code and deployment.
+#### 48. Prepare to explain the implementation
 
-### 50. Perform a criteria-based submission audit
-**Prompt**
-> Audit the repository against the submission criteria: executable code, reproducible setup, meaningful genuine Git history, public repository, transparent AI prompt history, visible reasoning, test evidence, limitations, and readiness for a walkthrough. Mark each criterion verified, partially verified, or not verified, and cite the artifact or command that supports the status. Do not treat a README statement alone as proof that behavior works.
+**Representative prompt:**
 
-**Human-in-the-loop:** I decide what must be fixed before submission and avoid marking unsupported items complete.
+> Ask me one technical question at a time about the architecture, models, validation, scheduling, workflow, offers, persistence, tests, deployment, and limitations. Correct misunderstandings without inventing personal experience.
 
-**Validation:** Save the final audit with actual results and remaining gaps.
+**Human review:** Answer in my own words and study topics I cannot explain.
 
----
+**Validation:** Rehearse using the actual source code.
 
-## Prompt-to-evidence traceability table
+#### 49. Prepare a technical walkthrough
 
-Use this table for the prompts that materially affected the delivered project. It is better to complete 8–15 well-evidenced entries than to invent evidence for all 50.
+**Representative prompt:**
 
-| Prompt # | Prompt status | Related file/commit | Human decision or change | Validation evidence |
+> Prepare a short walkthrough of the actual repository, covering the problem, architecture, representative business flow, tests, deployment, AI assistance, and known limitations. Identify the file, test, command, or live behavior that supports each claim.
+
+**Human review:** Remove claims that cannot be demonstrated.
+
+**Validation:** Rehearse with the current code and deployment.
+
+#### 50. Audit submission readiness
+
+**Representative prompt:**
+
+> Audit the repository against the submission criteria, including executable code, reproducible setup, Git history, AI prompt history, design reasoning, test evidence, limitations, and readiness for a technical walkthrough. Mark each item verified, partially verified, or not verified using supporting evidence.
+
+**Human review:** Identify remaining work without marking unsupported items complete.
+
+**Validation:** Record the actual status of each criterion.
+
+## 5. Prompt-to-Evidence Traceability
+
+Use the following table for important AI interactions that materially affected the delivered project. Populate it only with genuine evidence. A smaller set of well-supported entries is better than fabricated evidence for every prompt.
+
+| Prompt number | Classification | Related file or commit | Human decision or change | Validation evidence |
 |---|---|---|---|---|
-| [#] | [Original / reconstructed / proposed] | [Path or commit] | [What I accepted, changed, or rejected] | [Actual test/command/output] |
-| [#] | [Original / reconstructed / proposed] | [Path or commit] | [What I accepted, changed, or rejected] | [Actual test/command/output] |
-| [#] | [Original / reconstructed / proposed] | [Path or commit] | [What I accepted, changed, or rejected] | [Actual test/command/output] |
+| [Number] | Original / reconstructed / proposed | [Actual path or commit] | [Actual decision] | [Actual test or command result] |
+| [Number] | Original / reconstructed / proposed | [Actual path or commit] | [Actual decision] | [Actual test or command result] |
+| [Number] | Original / reconstructed / proposed | [Actual path or commit] | [Actual decision] | [Actual test or command result] |
 
-## Human contribution summary — fill in with real details
+## 6. Human Contribution Summary
 
-- **Requirements I personally clarified:** [Describe actual decisions.]
-- **Architecture decisions I made:** [Describe choices and trade-offs you can explain.]
-- **Code I reviewed or changed after AI suggestions:** [Give real files or examples.]
-- **AI suggestions I rejected or corrected:** [Give a real example, or state that none has been recorded.]
-- **Tests I actually ran:** [Add exact command and actual summary.]
-- **Deployment checks I actually performed:** [Add real status, route, and browser observations.]
+Complete these items with genuine details before submission.
+
+- **Requirements clarified:** [Describe actual decisions.]
+- **Architecture decisions made:** [Describe choices and trade-offs you can explain.]
+- **Code reviewed or changed after AI assistance:** [Identify real files or examples.]
+- **AI suggestions rejected or corrected:** [Give a real example, or state that none has been recorded.]
+- **Tests actually run:** [Provide exact commands and real results.]
+- **Deployment checks performed:** [Provide actual endpoint results and browser observations.]
 - **Known limitations:** [List real gaps and unverified behavior.]
 
-## Evidence log
+## 7. Evidence Log
 
 | Date/time | Evidence | Actual result | Status |
 |---|---|---|---|
-| [Fill in] | [Test command/output] | [Actual observation] | [Pass/fail/not run] |
-| [Fill in] | [Health/API request] | [Actual status/body] | [Observed result] |
-| [Fill in] | [Frontend manual check] | [Actual behavior] | [Observed result] |
-| [Fill in] | [Git commit/diff] | [Actual change] | [Committed/not committed] |
+| [Date/time] | [Test command and output] | [Observed result] | Pass / fail / not run |
+| [Date/time] | [Health or API request] | [Actual status and response] | Verified for that check / failed |
+| [Date/time] | [Frontend manual check] | [Observed behavior] | Verified for that check / not verified |
+| [Date/time] | [Git commit or diff] | [Actual change] | Committed / not committed |
 
-**Submission integrity:** This is a structured reconstruction to help organize the project's prompt-engineering process; it is not a historical transcript. Do not submit the 50 entries as proof that all 50 were used. For the strongest and most credible submission, label each entry as one of: **Original prompt** (verbatim from history), **Reconstructed from actual work** (wording recreated from a real interaction), or **Proposed workflow** (a useful prompt that was not necessarily used). Keep the third category out of claims about past AI usage. For every completed entry, add a real artifact, diff, command, test result, or decision where possible. Record failed attempts and corrections too; honest iteration is stronger evidence than a perfect-looking story.
-=======
-\# AI Prompt History and Development Disclosure
+## 8. Limitations of This Record
 
+This document does not claim to preserve every original prompt, AI response, or timestamp. Original prompt exports or notes should be added if available.
 
+The 50 entries are representative prompt templates and must not be represented as a verbatim history of all AI interactions. They are not evidence that each interaction occurred.
 
-\## 1. Purpose
+No AI-generated statement should be treated as proof that a feature works unless it is supported by source-code inspection, a reproducible command, a test result, or an observed application behavior.
 
-
-
-This document summarizes the AI-assisted development activities used during the Recruitment Management System challenge.
-
-
-
-\*\*Important disclosure:\*\* This is a reconstructed summary of the development workflow, not a complete verbatim export of every prompt submitted to every AI tool. Individual prompts and responses may not all have been preserved.
-
-
-
-\## 2. Areas Where AI Assistance Was Used
-
-
-
-AI assistance was used to help with development and troubleshooting activities such as:
-
-
-
-\- Reviewing application structure and separation of responsibilities.
-
-\- Discussing recruitment workflow features and implementation options.
-
-\- Troubleshooting frontend dependency installation and production-build issues.
-
-\- Reviewing deployment configuration and API connectivity.
-
-\- Improving setup instructions, testing documentation, and submission readiness.
-
-\- Drafting documentation describing architecture, tests, limitations, and development decisions.
-
-
-
-These are summaries of assistance areas, not guaranteed verbatim prompts.
-
-
-
-\## 3. Representative Prompt Themes
-
-
-
-The following are representative summaries of prompt themes, not exact historical quotations:
-
-
-
-1\. Review a recruitment management system project structure and identify missing implementation or documentation work.
-
-2\. Troubleshoot frontend dependency installation and make `npm ci` succeed.
-
-3\. Diagnose and resolve frontend production-build errors.
-
-4\. Check API deployment configuration and frontend-to-backend connectivity.
-
-5\. Organize testing evidence and document which checks passed and which remain unverified.
-
-6\. Review Git changes and prepare a safe submission without committing environment secrets.
-
-7\. Prepare architecture and AI-usage disclosure documentation.
-
-
-
-\## 4. Where AI Accelerated Development
-
-
-
-AI assistance helped accelerate troubleshooting, organize technical checks, explain command-line output, and draft documentation.
-
-
-
-\## 5. What the Developer Must Personally Verify
-
-
-
-The developer remains responsible for understanding and validating the submitted work, including:
-
-
-
-\- Reviewing the code and its behavior.
-
-\- Running tests and checking the actual command output.
-
-\- Confirming deployment behavior in the browser.
-
-\- Reviewing configuration and ensuring no secrets are committed.
-
-\- Understanding the architecture, design trade-offs, and limitations.
-
-\- Being able to explain the implementation during a project review.
-
-
-
-\## 6. Limitations of This Record
-
-
-
-This document does not claim to preserve every original prompt, response, or timestamp. It should be supplemented with original prompt exports or notes if they are available.
-
-
-
-No AI-generated statement should be treated as proof that a feature works unless supported by actual code inspection or test evidence.
->>>>>>> fd555ee (docs: prepare recruitment system submission)
+**Submission integrity:** Clearly distinguish original prompts from reconstructed summaries and proposed prompts. Record genuine human decisions, failed attempts, corrections, and validation results wherever evidence is available. The purpose of this document is to make AI-assisted development transparent and reviewable, not to create an artificial development history.
