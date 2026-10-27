@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Design Decisions
 
 ## Recruitment Management System
@@ -122,3 +123,132 @@ Fill in these references after checking the repository and running the relevant 
 - **Git history:** `7b66eac`, `936757e`, `43c73bd` (confirm with `git log --oneline`).
 - **Deployment check:** [Add date/time, endpoint, HTTP status, and sanitized output.]
 - **Outstanding issues:** [List real failures, gaps, or unverified behavior.]
+=======
+\# Design Decisions
+
+
+
+\## 1. Project Goal
+
+
+
+The Recruitment Management System organizes recruitment activities, including requisitions, candidate screening, interview scheduling, workflow tracking, offers, audit checks, and reporting.
+
+
+
+\## 2. Architecture
+
+
+
+The project separates application responsibilities into several areas:
+
+
+
+\- `src/`: core models, business logic, workflow, scheduling, screening, offers, validation, and audit functionality.
+
+\- `api/`: backend API functionality.
+
+\- `app/`: user-facing application functionality.
+
+\- `frontend/`: frontend application.
+
+\- `tests/`: automated tests.
+
+\- `schemas/`: data schemas.
+
+\- `migrations/`: database migration files.
+
+\- `data/` and `reports/`: data and report-related project resources.
+
+
+
+This separation helps keep core business logic distinct from the interface and API.
+
+
+
+\## 3. Backend and API
+
+
+
+FastAPI provides the HTTP API and interactive API documentation. The health endpoint provides a basic way to check application and database availability.
+
+
+
+The deployed API documentation is available at:
+
+
+
+https://recruitment-management-system-api.onrender.com/docs
+
+
+
+\## 4. Frontend and Deployment
+
+
+
+The frontend is built using Vite and is deployed separately from the backend.
+
+
+
+\- Frontend: https://recruitment-management-system-three.vercel.app/
+
+\- Backend: https://recruitment-management-system-api.onrender.com
+
+
+
+Separating frontend and backend deployment allows each component to be built and deployed independently. It also requires correct API URL configuration and cross-origin request settings.
+
+
+
+\## 5. Configuration and Secrets
+
+
+
+Environment-specific configuration is supplied through environment variables. `.env.example` provides a template for local setup, while the actual `.env` file is excluded from Git.
+
+
+
+Never commit real database passwords, API keys, access tokens, or production credentials.
+
+
+
+\## 6. Testing Strategy
+
+
+
+Automated Python tests validate selected application behavior. The recorded test run completed with 19 passing tests and no failures.
+
+
+
+The frontend is checked through a clean npm installation and a production build. These checks verify installation and compilation, but do not by themselves prove that every browser workflow works correctly.
+
+
+
+\## 7. Screening and Responsible Use
+
+
+
+Screening outputs should support human review rather than act as the sole basis for hiring decisions. Recruitment decisions can affect applicants significantly, so the system should be reviewed for incorrect results, inconsistent treatment, and inappropriate use of candidate data.
+
+
+
+\## 8. Limitations
+
+
+
+\- The recorded automated test results cover only the tests that were run.
+
+\- Full end-to-end coverage of every recruitment workflow has not been established by the evidence recorded here.
+
+\- Deployment availability and external service behavior can change.
+
+\- Screening results require appropriate human oversight.
+
+
+
+\## 9. Further Improvements
+
+
+
+Potential improvements include broader API and browser-level tests, stronger validation of workflow transitions, improved observability, and additional safeguards for candidate data and screening decisions.
+>>>>>>> fd555ee (docs: prepare recruitment system submission)

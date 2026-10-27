@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Recruitment Management System — AI Prompt Engineering & Human-in-the-Loop Log
 
 ## Important accuracy note
@@ -508,3 +509,110 @@ Use this table for the prompts that materially affected the delivered project. I
 | [Fill in] | [Git commit/diff] | [Actual change] | [Committed/not committed] |
 
 **Submission integrity:** This is a structured reconstruction to help organize the project's prompt-engineering process; it is not a historical transcript. Do not submit the 50 entries as proof that all 50 were used. For the strongest and most credible submission, label each entry as one of: **Original prompt** (verbatim from history), **Reconstructed from actual work** (wording recreated from a real interaction), or **Proposed workflow** (a useful prompt that was not necessarily used). Keep the third category out of claims about past AI usage. For every completed entry, add a real artifact, diff, command, test result, or decision where possible. Record failed attempts and corrections too; honest iteration is stronger evidence than a perfect-looking story.
+=======
+\# AI Prompt History and Development Disclosure
+
+
+
+\## 1. Purpose
+
+
+
+This document summarizes the AI-assisted development activities used during the Recruitment Management System challenge.
+
+
+
+\*\*Important disclosure:\*\* This is a reconstructed summary of the development workflow, not a complete verbatim export of every prompt submitted to every AI tool. Individual prompts and responses may not all have been preserved.
+
+
+
+\## 2. Areas Where AI Assistance Was Used
+
+
+
+AI assistance was used to help with development and troubleshooting activities such as:
+
+
+
+\- Reviewing application structure and separation of responsibilities.
+
+\- Discussing recruitment workflow features and implementation options.
+
+\- Troubleshooting frontend dependency installation and production-build issues.
+
+\- Reviewing deployment configuration and API connectivity.
+
+\- Improving setup instructions, testing documentation, and submission readiness.
+
+\- Drafting documentation describing architecture, tests, limitations, and development decisions.
+
+
+
+These are summaries of assistance areas, not guaranteed verbatim prompts.
+
+
+
+\## 3. Representative Prompt Themes
+
+
+
+The following are representative summaries of prompt themes, not exact historical quotations:
+
+
+
+1\. Review a recruitment management system project structure and identify missing implementation or documentation work.
+
+2\. Troubleshoot frontend dependency installation and make `npm ci` succeed.
+
+3\. Diagnose and resolve frontend production-build errors.
+
+4\. Check API deployment configuration and frontend-to-backend connectivity.
+
+5\. Organize testing evidence and document which checks passed and which remain unverified.
+
+6\. Review Git changes and prepare a safe submission without committing environment secrets.
+
+7\. Prepare architecture and AI-usage disclosure documentation.
+
+
+
+\## 4. Where AI Accelerated Development
+
+
+
+AI assistance helped accelerate troubleshooting, organize technical checks, explain command-line output, and draft documentation.
+
+
+
+\## 5. What the Developer Must Personally Verify
+
+
+
+The developer remains responsible for understanding and validating the submitted work, including:
+
+
+
+\- Reviewing the code and its behavior.
+
+\- Running tests and checking the actual command output.
+
+\- Confirming deployment behavior in the browser.
+
+\- Reviewing configuration and ensuring no secrets are committed.
+
+\- Understanding the architecture, design trade-offs, and limitations.
+
+\- Being able to explain the implementation during a project review.
+
+
+
+\## 6. Limitations of This Record
+
+
+
+This document does not claim to preserve every original prompt, response, or timestamp. It should be supplemented with original prompt exports or notes if they are available.
+
+
+
+No AI-generated statement should be treated as proof that a feature works unless supported by actual code inspection or test evidence.
+>>>>>>> fd555ee (docs: prepare recruitment system submission)

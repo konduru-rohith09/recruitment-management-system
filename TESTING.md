@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Testing and Verification
 
 ## Recruitment Management System
@@ -260,3 +261,216 @@ A successful test suite provides evidence for the scenarios it covers. A success
 ## 12. Submission standard
 
 A check is marked **verified** only for the specific command, route, environment, and time actually tested. A successful health endpoint is not proof that the whole system works. If a command has not been run, mark it **Not verified**. If it fails, preserve the result and explain the next step. This evidence-based approach is more credible than claiming that every check passed without output.
+=======
+\# Testing and Verification
+
+
+
+\## 1. Overview
+
+
+
+This document records the tests and manual checks performed for the Recruitment Management System. Results are limited to checks actually run and observed.
+
+
+
+\## 2. Python Automated Tests
+
+
+
+Command used:
+
+
+
+```cmd
+
+python -m pytest
+
+```
+
+
+
+Recorded result:
+
+
+
+\- Tests passed: 19
+
+\- Tests failed: 0
+
+\- Duration: 11.38 seconds
+
+
+
+\*\*Status:\*\* Passed, based on the recorded test output.
+
+
+
+\## 3. Frontend Installation
+
+
+
+Command used from the `frontend` directory:
+
+
+
+```cmd
+
+npm ci
+
+```
+
+
+
+Recorded result:
+
+
+
+\- Dependency installation completed successfully.
+
+\- npm reported 0 vulnerabilities.
+
+
+
+\*\*Status:\*\* Passed, based on the recorded command output.
+
+
+
+\## 4. Frontend Production Build
+
+
+
+Command used from the `frontend` directory:
+
+
+
+```cmd
+
+npm run build
+
+```
+
+
+
+Recorded result:
+
+
+
+\- Vite production build completed successfully.
+
+\- 17 modules transformed.
+
+\- Build duration: approximately 140 ms.
+
+
+
+\*\*Status:\*\* Passed, based on the recorded command output.
+
+
+
+\## 5. Backend Health Check
+
+
+
+Endpoint:
+
+
+
+`https://recruitment-management-system-api.onrender.com/health`
+
+
+
+Previously observed result:
+
+
+
+\- HTTP status: 200
+
+\- Application status: UP
+
+\- Database status: HEALTHY
+
+
+
+\*\*Status:\*\* Passed at the time checked. Recheck before submission because deployment state can change.
+
+
+
+\## 6. Frontend and Backend Deployment
+
+
+
+Frontend:
+
+
+
+https://recruitment-management-system-three.vercel.app/
+
+
+
+Backend:
+
+
+
+https://recruitment-management-system-api.onrender.com
+
+
+
+API documentation:
+
+
+
+https://recruitment-management-system-api.onrender.com/docs
+
+
+
+The URLs were previously confirmed accessible. Perform a final browser check after the latest repository changes are deployed.
+
+
+
+\## 7. CORS Check
+
+
+
+A previous check observed the following response header for the backend health endpoint:
+
+
+
+`access-control-allow-origin: https://recruitment-management-system-three.vercel.app`
+
+
+
+\*\*Status:\*\* Passed at the time checked. Recheck if deployment configuration changes.
+
+
+
+\## 8. Remaining Verification
+
+
+
+The following checks are not confirmed by the evidence recorded here:
+
+
+
+\- A complete end-to-end workflow through the browser.
+
+\- Every API endpoint and its error cases.
+
+\- Installation and startup from a fresh clone on another machine.
+
+\- The latest Vercel build after the dependency lockfile update.
+
+\- A complete manual review of all screening, scheduling, offer, and audit workflows.
+
+
+
+Do not describe these checks as passed until they have actually been performed.
+
+
+
+\## 9. Limitations
+
+
+
+These results document the tests and checks observed during development. They do not guarantee the absence of defects. Re-run automated tests and verify the deployed application before making a submission.
+>>>>>>> fd555ee (docs: prepare recruitment system submission)
