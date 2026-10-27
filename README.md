@@ -1,139 +1,201 @@
-# Recruitment Management & Workflow Validation System
+# Recruitment Management System
 
-A recruitment workflow management platform designed to streamline the hiring lifecycle—from job requisition creation to offer acceptance. The system provides explainable candidate screening, interview scheduling, workflow validation, compensation controls, anomaly detection, and recruitment analytics.
+A recruitment management system that helps organize the hiring process, from creating a job opening to managing interviews and making offer decisions.
 
-## Key Features
+I built this project to bring the main steps of recruitment into one place and make the process easier to track and validate. It focuses on practical hiring problems such as inconsistent screening, interview scheduling conflicts, missing feedback, salary mismatches, and applications that remain active after a role is closed.
 
-- **Requisition Management:** Manage job openings, headcount requirements, salary bands, and approvals.
-- **Explainable Candidate Screening:** Evaluate candidates using weighted, job-related skills, experience, and assessment criteria.
-- **Interview Scheduling:** Detect interviewer availability conflicts and overlapping interview slots.
-- **Workflow Automation:** Enforce valid recruitment lifecycle transitions and prevent advancement when mandatory feedback is missing.
-- **Offer Management:** Validate compensation against approved salary bands and support authorized exceptions.
-- **Audit & Anomaly Detection:** Identify five recruitment-process anomalies for investigation and corrective action.
-- **Synthetic Data Generation:** Generate repeatable datasets using a fixed random seed.
-- **Recruitment Analytics:** Track hiring metrics and conversion funnels through API endpoints and a Streamlit dashboard.
-- **Automated Testing:** Validate core business rules, scheduling, offers, screening, data integrity, and reproducibility.
+The project includes a FastAPI backend, a database layer, a Streamlit analytics dashboard, and automated tests for important recruitment rules.
 
-## Technology Stack
+## Live Demo
 
-| Component | Technologies |
+- **Frontend:** https://recruitment-management-system-three.vercel.app/
+- **Backend API:** https://recruitment-management-system-api.onrender.com
+- **API Documentation:** https://recruitment-management-system-api.onrender.com/docs
+- **API Health Check:** https://recruitment-management-system-api.onrender.com/health
+
+The frontend is hosted on Vercel, while the backend API runs on Render. The frontend uses the API to access recruitment-related information and functionality.
+
+## What Does This Project Do?
+
+The system manages different parts of the recruitment process and checks that important rules are followed.
+
+### 1. Job Requisition Management
+
+Recruiters need to keep track of open positions, required headcount, and salary limits. This module manages job requisitions and supports the rules associated with opening and closing positions.
+
+### 2. Candidate Screening
+
+Candidates are evaluated using configurable, weighted criteria such as relevant skills, experience, and assessment results. The system is designed to make screening scores explainable instead of relying on an unexplained final score.
+
+Screening criteria should be job-related and should not use protected or demographic characteristics such as age, gender, caste, religion, or disability.
+
+### 3. Interview Scheduling
+
+The scheduling module checks interviewer availability and identifies overlapping interview slots. It also prevents inactive interviewers from being assigned to interviews where the relevant business rules prohibit the assignment.
+
+### 4. Recruitment Workflow
+
+Applications move through defined recruitment stages. The system validates transitions and prevents certain decisions from being made before required steps are complete.
+
+For example, an application should not advance to a pending decision when required interviewer feedback is still missing.
+
+### 5. Offer Management
+
+The offer module checks proposed compensation against the salary band associated with a requisition. Offers outside the approved range require the appropriate exception handling rather than being treated as ordinary offers.
+
+### 6. Audit and Anomaly Detection
+
+The system checks for five predefined recruitment-process anomalies:
+
+- **Interviewer unavailable:** An interview is assigned to an inactive interviewer or conflicts with an existing booking.
+- **Duplicate application:** A duplicate application attempt is identified and flagged.
+- **Missing feedback:** An application is advanced without all required interviewer scorecards.
+- **Salary outside band:** An offer exceeds the permitted salary range without the required authorization.
+- **Closed role with active applications:** A requisition is closed or cancelled while applications remain in active stages.
+
+These checks help identify problems that need investigation or corrective action.
+
+### 7. Recruitment Analytics
+
+The project includes metrics for understanding how candidates move through the recruitment process. These include screening pass rate, interview completion rate, feedback submission rate, offer acceptance rate, rejection rate, withdrawal rate, and average time to decision.
+
+The Streamlit dashboard is intended to make these metrics and anomaly records easier to review.
+
+## Technologies Used
+
+| Technology | How it is used |
 |---|---|
-| Language | Python 3.11+ |
-| Backend API | FastAPI, Uvicorn |
-| Database & ORM | MySQL, SQLite, SQLAlchemy |
-| Validation | Pydantic |
-| Data Processing | Pandas, NumPy, Faker |
-| Dashboard | Streamlit, Plotly |
-| Database Migrations | Alembic |
-| Testing | pytest |
-| Configuration | python-dotenv |
+| Python | Core application logic and business rules |
+| FastAPI | Backend REST API |
+| SQLAlchemy | Database models and ORM operations |
+| MySQL / SQLite | Data storage, depending on configuration |
+| Pydantic | Request and data validation |
+| Pandas and NumPy | Data processing and calculations |
+| Faker | Synthetic data generation |
+| Streamlit | Analytics dashboard |
+| Plotly | Interactive charts |
+| Alembic | Database schema migrations |
+| pytest | Automated testing |
+| Vercel | Frontend hosting |
+| Render | Backend hosting |
 
-## Project Architecture
+## Project Structure
+
+The code is organized by responsibility so that the API, business logic, dashboard, and tests can be maintained separately.
 
 ```text
 recruitment-management-system/
-├── api/                 # FastAPI application and REST endpoints
-├── app/                 # Streamlit analytics dashboard
-├── src/                 # Core business logic and domain models
-│   └── services/        # Recruitment domain services
-├── schemas/             # SQL schema and database documentation
-├── migrations/          # Alembic migration files
-├── data/                # Generated datasets and ground truth
-├── reports/             # Validation and reproducibility reports
-├── tests/               # Automated test suite
-├── requirements.txt
-├── Dockerfile
-├── alembic.ini
-├── .env.example
+├── api/              # FastAPI application and API routes
+├── app/              # Streamlit analytics dashboard
+├── src/              # Models, services and business logic
+│   └── services/     # Requisition, application, interview and offer services
+├── schemas/          # Database schema and documentation
+├── migrations/       # Alembic database migrations
+├── data/             # Generated datasets and anomaly ground truth
+├── reports/          # Validation and reproducibility reports
+├── tests/            # Automated tests
+├── requirements.txt  # Python dependencies
+├── Dockerfile        # Container configuration
+├── alembic.ini       # Migration configuration
+├── .env.example      # Example environment variables
 └── README.md
 ```
 
-## Getting Started
+## How to Run the Project Locally
 
 ### Prerequisites
 
+Before starting, install:
+
 - Python 3.11 or later
 - Git
-- MySQL 8+ for a local MySQL setup; SQLite may be used where supported by the project
+- MySQL 8 or later if you want to use MySQL locally
 
-### 1. Clone the Repository
+SQLite can be used for isolated testing where supported by the project configuration.
+
+### Step 1: Clone the repository
 
 ```bash
 git clone https://github.com/konduru-rohith09/recruitment-management-system.git
 cd recruitment-management-system
 ```
 
-### 2. Create a Virtual Environment
+### Step 2: Create a virtual environment
 
-**Windows Command Prompt:**
+On Windows Command Prompt:
 
 ```cmd
 python -m venv .venv
 .venv\Scripts\activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
 ```
 
-**Linux/macOS:**
+On Linux or macOS:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+```
+
+Install the project dependencies:
+
+```bash
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment Variables
+### Step 3: Configure the environment
 
-Create your local environment file.
+Create a local `.env` file from the provided example.
 
-**Windows:**
+On Windows:
 
 ```cmd
 copy .env.example .env
 ```
 
-**Linux/macOS:**
+On Linux or macOS:
 
 ```bash
 cp .env.example .env
 ```
 
-Configure `DATABASE_URL` in `.env` according to your database setup. Example MySQL configuration:
+Update the `DATABASE_URL` value in `.env` to match your local database configuration.
+
+For example, a MySQL connection string has this format:
 
 ```ini
 DATABASE_URL=mysql+pymysql://recruit_user:YOUR_PASSWORD@localhost:3306/recruitment_db?charset=utf8mb4
 ```
 
-Use the database configuration supported by your environment. Never commit real credentials, API keys, or your `.env` file to GitHub.
+Replace the username, password, and database details with your own values. Never commit your real `.env` file or credentials to GitHub.
 
-### 4. Initialize the Database
+### Step 4: Initialize the database
 
-If using MySQL, create the database and application user first. Then initialize the schema using the migration configuration:
+If you are using MySQL, create the database and application user first. Then initialize the schema using the project's migration configuration:
 
 ```bash
 alembic upgrade head
 ```
 
-Alternatively, the supplied SQL schema can be used for a fresh database:
+Alternatively, for a fresh database, you can use the supplied SQL schema:
 
 ```bash
 mysql -u recruit_user -p recruitment_db < schemas/schema.sql
 ```
 
-Use one initialization method at a time and verify the database configuration before running the application.
+Use the initialization method appropriate for your setup and avoid applying both methods without checking the existing database state.
 
-## Generate Synthetic Data
+### Step 5: Generate sample data
 
-The data generator supports starter and full datasets using a deterministic seed.
+The project includes a synthetic data generator that supports starter and full dataset sizes.
 
-**Starter dataset:**
+To generate the starter dataset:
 
 ```bash
 python -m src.generate_data --seed 20261022 --scale starter --reset-db
 ```
 
-**Full dataset:**
+To generate the full dataset:
 
 ```bash
 python -m src.generate_data --seed 20261022 --scale full --reset-db
@@ -143,25 +205,27 @@ The documented starter dataset contains 10 requisitions, 100 candidates, 150 app
 
 The documented full dataset contains 100 requisitions, 2,000 candidates, 3,000 applications, 600 interviews, 150 offers, and five controlled anomalies.
 
-Generated outputs are configured to be exported under `data/generated/` and `data/ground_truth/`. **Use `--reset-db` carefully**, as it resets generated database data.
+The fixed seed is intended to make generated data repeatable. The `--reset-db` option should be used carefully because it resets generated database data.
 
-## Run the Application
+### Step 6: Start the backend
 
-### Start the FastAPI Backend
+From the project root, run:
 
 ```bash
 uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-Available local endpoints:
+Once the API is running, open:
 
 - Swagger API documentation: http://127.0.0.1:8000/docs
 - ReDoc: http://127.0.0.1:8000/redoc
 - Health check: http://127.0.0.1:8000/health
-- Recruitment metrics: http://127.0.0.1:8000/metrics
-- Anomaly detection: http://127.0.0.1:8000/anomalies
+- Metrics: http://127.0.0.1:8000/metrics
+- Anomalies: http://127.0.0.1:8000/anomalies
 
-### Start the Streamlit Dashboard
+Swagger UI is useful for inspecting available endpoints and trying API requests.
+
+### Step 7: Start the dashboard
 
 Open a second terminal, activate the virtual environment, and run:
 
@@ -169,69 +233,68 @@ Open a second terminal, activate the virtual environment, and run:
 streamlit run app/dashboard.py --server.port 8501
 ```
 
-The dashboard is designed to display recruitment KPIs, hiring-stage funnels, interview and feedback summaries, anomaly records, and validation results.
-
-## Business Rules & Anomaly Detection
-
-| Anomaly | Expected System Behavior |
-|---|---|
-| `INTERVIEWER_UNAVAILABLE` | Block an assignment when an interviewer is inactive or has an overlapping interview |
-| `DUPLICATE_APPLICATION` | Flag duplicate application attempts |
-| `MISSING_FEEDBACK` | Prevent workflow advancement until required interview scorecards are submitted |
-| `SALARY_OUTSIDE_BAND` | Block an out-of-band offer or require an authorized exception |
-| `CLOSED_ROLE_ACTIVE_APPLICATIONS` | Flag closed or cancelled requisitions that still have active applications |
-
-These controls improve traceability and help identify recruitment-process exceptions for review.
-
-## Recruitment Metrics
-
-The system defines metrics for monitoring hiring performance, including:
-
-- Screening pass rate
-- Average screening score
-- Interview completion rate
-- Interviewer feedback submission rate
-- Offer acceptance rate
-- Application rejection rate
-- Application withdrawal rate
-- Average time to decision
-
-Metric calculations include safeguards for empty denominators, covered by the automated tests.
+The dashboard is designed to present recruitment metrics, hiring-stage information, interview feedback, and detected anomalies.
 
 ## Testing
 
-Run the automated tests from the repository root:
+I ran the project's automated test suite using:
 
 ```bash
 python -m pytest -v
 ```
 
-**Verified test result:** 19 tests passed in 11.38 seconds in the development environment.
+**Verified result: 19 tests passed in 11.38 seconds.**
 
-The test suite covers data generation, database models, offer management, deterministic reproducibility, interview scheduling, screening rules, data validation, and workflow transitions.
+The tests cover:
 
-See [`TESTING.md`](TESTING.md) for detailed test instructions and verification notes.
+- Synthetic data generation
+- Database models and relationships
+- Offer issuance and acceptance
+- Reproducibility
+- Interview scheduling and conflict detection
+- Screening rules and score thresholds
+- Data validation and anomaly detection
+- Recruitment workflow transitions
 
-## Documentation
+These results confirm that the tested scenarios passed in the development environment. They do not, by themselves, guarantee that every feature in the deployed application works correctly.
 
-- [`TESTING.md`](TESTING.md) — Testing instructions, results, and verification notes.
-- [`DESIGN_DECISIONS.md`](DESIGN_DECISIONS.md) — Architecture, technical decisions, trade-offs, and limitations.
-- [`PROMPT_HISTORY.md`](PROMPT_HISTORY.md) — AI-assisted development workflow, prompt examples, and human review notes. This is a reconstructed summary, not a verbatim transcript of every prompt used.
+For additional details, see [`TESTING.md`](TESTING.md).
 
-## Known Limitations
+## Design Decisions
 
-- **Notifications:** External email and SMS delivery integrations are not implemented.
-- **Resume parsing:** Production-grade PDF/OCR resume extraction is not implemented; synthetic summaries and parsed skill fields are used.
-- **Calendar integration:** Scheduling is managed internally and is not synchronized with Google Calendar or Microsoft Outlook.
-- **Deployment configuration:** Hosted environments may require separate database, CORS, and frontend API URL configuration.
+A few important decisions shaped the implementation:
 
-## Security & Responsible Screening
+- **Separate business logic from API routes:** This keeps recruitment rules easier to test and maintain.
+- **Use explicit workflow transitions:** Applications should not advance when mandatory steps are incomplete.
+- **Make screening explainable:** Weighted, job-related criteria make it easier to understand how a screening result was calculated.
+- **Use deterministic synthetic data:** A fixed seed makes repeatable testing and debugging easier.
+- **Validate before accepting important operations:** Scheduling, feedback, and compensation rules help prevent invalid states from being introduced.
 
-- Keep secrets and credentials out of source control.
-- Use synthetic data for demonstrations unless real-data use is authorized.
-- Keep screening criteria job-related and explainable, and review them for unintended bias.
-- Apply appropriate database permissions and review audit records.
+See [`DESIGN_DECISIONS.md`](DESIGN_DECISIONS.md) for more information about the architecture, trade-offs, and limitations.
+
+## Current Limitations
+
+This project covers the core workflow and validation logic, but some production features are outside its current scope:
+
+- **Email and SMS:** External notification delivery through services such as SMTP or Twilio is not implemented.
+- **Resume parsing:** Production-grade PDF/OCR extraction is not implemented; the project uses synthetic summaries and parsed skill fields.
+- **Calendar integration:** Interview scheduling is managed internally and is not synchronized with Google Calendar or Microsoft Outlook.
+- **Deployment configuration:** Hosted and local environments may require different database, CORS, and frontend API URL settings.
+
+## Security and Responsible Screening
+
+Recruitment systems handle decisions that can affect people's careers. Screening should remain based on job-related criteria, and the results should be reviewed for unintended bias.
+
+For development and demonstration, synthetic data is preferable unless real-data use has been authorized. Database credentials and other secrets should be kept out of source control, and production deployments should use appropriate access controls.
+
+## AI-Assisted Development
+
+AI tools can help with implementation ideas, debugging, documentation, and test design, but generated suggestions should be reviewed and validated before being treated as correct.
+
+The accompanying [`PROMPT_HISTORY.md`](PROMPT_HISTORY.md) documents the AI-assisted workflow and human review notes. It is a reconstructed summary rather than a verbatim transcript of every prompt used.
 
 ## Project Status
 
-This project demonstrates recruitment workflow orchestration, validation, deterministic synthetic data generation, API development, and analytics. Refer to the test and design documentation for the evidence collected, implementation decisions, and known verification gaps.
+The project brings together recruitment workflow management, screening, scheduling, offer controls, anomaly detection, and analytics in one application. The automated tests provide evidence for the scenarios they cover, while the documentation describes setup requirements, design choices, and known limitations.
+
+**Start here:** [Open the live application](https://recruitment-management-system-three.vercel.app/)
